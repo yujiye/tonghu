@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="jobLogDetailDao">
+	<resultMap id="jobLogDetailResult" type="jobLogDetail">
+		<result property="id" column="id"/>
+		<result property="jobSequenceNo" column="job_sequence_no"/>
+		<result property="jobName" column="job_name"/>
+		<result property="taskContent" column="task_content"/>
+		<result property="status" column="status"/>
+		<result property="note" column="note"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<insert id="addOne" parameterType="jobLogDetail">
+		INSERT INTO job_log_detail(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				id,
+			</if>
+			<if test="jobSequenceNo !=null and jobSequenceNo != ''">
+				job_sequence_no,
+			</if>
+			<if test="jobName !=null and jobName != ''">
+				job_name,
+			</if>
+			<if test="taskContent !=null and taskContent != ''">
+				task_content,
+			</if>
+			<if test="status !=null">
+				status,
+			</if>
+			<if test="note !=null and note != ''">
+				note,
+			</if>
+			create_time
+		</trim>
+		) VALUES (
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				#{id},
+			</if>
+			<if test="jobSequenceNo !=null and jobSequenceNo != ''">
+				#{jobSequenceNo},
+			</if>
+			<if test="jobName !=null and jobName != ''">
+				#{jobName},
+			</if>
+			<if test="taskContent !=null and taskContent != ''">
+				#{taskContent},
+			</if>
+			<if test="status !=null">
+				#{status},
+			</if>
+			<if test="note !=null and note != ''">
+				#{note},
+			</if>
+			NOW()
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+</mapper>

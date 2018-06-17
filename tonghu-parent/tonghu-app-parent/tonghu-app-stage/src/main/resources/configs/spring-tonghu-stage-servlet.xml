@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    					http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+					    http://www.springframework.org/schema/context 
+					    http://www.springframework.org/schema/context/spring-context-4.1.xsd
+					    http://www.springframework.org/schema/jee 
+						http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+						http://www.springframework.org/schema/mvc
+					    http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+					    http://www.springframework.org/schema/util  
+					    http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+	<context:annotation-config />
+	<!-- 激活@Controller模式 -->
+	<mvc:annotation-driven />
+	<!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com.tonghu.app.stage.controller,com.tonghu.app.stage.security.controller">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<mvc:default-servlet-handler />
+
+	<!-- 对静态资源文件的访问  防止DispatcherServlet的过滤-->
+	<mvc:resources mapping="/img/**" location="/img/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/log/**" location="/log/" />
+	<mvc:resources mapping="/file/**" location="/file/" />
+
+	<!-- freemarker的配置 -->
+	<bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="freemarkerSettings">
+			<props>
+				<!-- FreeMarker默认每隔5秒检查模板是否被更新，如果已经更新了，就会重新加载并分析模板。 但经常检查模板是否更新可能比较耗时。如果应用运行在生产模式下，而且你预期模板不会经常更新， -->
+				<!-- 则可以将更新的延迟时间延长至一个小时或者更久。 可以通过为freemarkerSettings属性设置template_update_delay达到这一目的  -->
+				<prop key="template_update_delay">5</prop>
+				<prop key="tag_syntax">auto_detect</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="output_encoding">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">#.##</prop>
+				<!-- 可以满足一般需要。默认情况变量为null则替换为空字符串，如果需要自定义，写上${empty!"EmptyValue of fbysss"}的形式即可  -->
+				<prop key="classic_compatible">true</prop>
+			</props>
+		</property>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+
+	<!-- FreeMarker视图解析 如返回userinfo。。在这里配置后缀名ftl和视图解析器。。 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+	</bean>
+
+	<bean class="com.tonghu.pub.common.web.MyBeanPostProcessor" />
+
+
+	<!-- ④：定义文件上传处理器,最大1M -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>1000000</value>
+		</property>
+	</bean>
+
+	<bean id="socketServer" class="com.tonghu.app.stage.socket.SocketServer"
+		  init-method="initSocketServer" destroy-method="stopSocketServer">
+		<constructor-arg name="port" value="8990" />
+		<constructor-arg name="receiveTimeDelay" value="5000" />
+		<constructor-arg name="checkSocketIntervalTime" value="5000" />
+		<constructor-arg name="running" value="false" />
+	</bean>
+
+
+</beans>

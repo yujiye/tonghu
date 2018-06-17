@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="attachmentDao">
+	<resultMap id="attachmentResult" type="attachment">
+		<id property="id" column="id"/>
+		<result property="fileName" column="file_name"/>
+		<result property="originalFileName" column="original_file_name"/>
+		<result property="fileType" column="file_type"/>
+		<result property="filePath" column="file_path"/>
+		<result property="fileSize" column="file_size"/>
+		<result property="imgMeasure" column="img_measure"/>
+		<result property="profile" column="profile"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateUserId" column="update_userid"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, file_name, original_file_name, file_type, file_path, file_size, img_measure,
+		profile, create_userid, create_time, update_userid, update_time
+    </sql>
+  
+	<insert id="insertNewAttachment" parameterType="attachment" useGeneratedKeys="true" keyProperty="id">
+		insert into attachment (
+		<trim suffix="" suffixOverrides=",">
+			<if test="fileName != null">
+				file_name,
+			</if>
+			<if test="originalFileName != null">
+				original_file_name,
+			</if>
+			<if test="fileType != null">
+				file_type,
+			</if>
+			<if test="filePath != null">
+				file_path,
+			</if>
+			<if test="fileSize != null">
+				file_size,
+			</if>
+			<if test="imgMeasure != null">
+				img_measure,
+			</if>
+			<if test="profile != null">
+				profile,
+			</if>
+			<if test="createUserId != null">
+				create_userid,
+			</if>
+			create_time,
+			<if test="updateUserId != null">
+				update_userid,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+		    <if test="fileName != null">
+				#{fileName},
+			</if>
+			<if test="originalFileName != null">
+				#{originalFileName},
+			</if>
+			<if test="fileType != null">
+				#{fileType},
+			</if>
+			<if test="filePath != null">
+				#{filePath},
+			</if>
+			<if test="fileSize != null">
+				#{fileSize},
+			</if>
+			<if test="imgMeasure != null">
+				#{imgMeasure},
+			</if>
+			<if test="profile != null">
+				#{profile},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId},
+			</if>
+			NOW(),
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 根据id主键信息获取 附件信息-->
+	<select id="selectAttachmentById" resultMap="attachmentResult" resultType="attachment" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			attachment 
+		WHERE id = #{id}
+	</select>
+
+	<!-- 根据附件id集合获取附件信息集合 -->
+	<select id="selectAttachmentListByIdList" resultMap="attachmentResult"
+			resultType="attachment" parameterType="java.util.List">
+		SELECT
+			<include refid="allColumn"/>
+		FROM
+			attachment
+		WHERE id IN
+			<foreach collection="list" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+	</select>
+
+	
+	<!-- 根据检索条件获取车型的信息 -->
+	<select id="selectAttachmentInfoByQuery" resultType="attachment" resultMap="attachmentResult" parameterType="attachmentQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			attachment 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="fileName !=null">
+				AND <![CDATA[ file_name = #{fileName} ]]>
+			</if>
+			<if test="originalFileName !=null">
+				AND <![CDATA[ original_file_name = #{originalFileName} ]]>
+			</if>
+			<if test="fileType !=null">
+				AND <![CDATA[ file_type = #{fileType} ]]>
+			</if>
+			<if test="filePath !=null">
+				AND <![CDATA[ file_path = #{filePath} ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		<if
+			test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+	
+	<!-- 根据记录ID更新附件信息 -->
+    <update id="updateAttachmentById" parameterType="attachment">
+    	UPDATE attachment SET
+			<trim suffix="" suffixOverrides=",">
+				<if test="fileName != null">
+					file_name = #{fileName},
+				</if>
+				<if test="originalFileName != null">
+					original_file_name = #{originalFileName},
+				</if>
+				<if test="fileType != null">
+					file_type = #{fileType},
+				</if>
+				<if test="filePath != null">
+					file_path = #{filePath},
+				</if>
+				<if test="profile != null">
+					profile = #{profile},
+				</if>
+				<if test="updateUserId != null">
+					update_userid = #{updateUserId},
+				</if>
+				update_time = NOW(),
+			</trim>
+			WHERE id = #{id}
+    </update>
+    
+    <!-- 根据记录ID删除附件信息 物理删除 -->
+    <delete id="deleteAttachmentById" parameterType="long">
+    	DELETE FROM attachment WHERE id = #{id}
+    </delete>
+	
+</mapper>

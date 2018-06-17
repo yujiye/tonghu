@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="merchant-product-apply-job" version="2.5">
+    <display-name>tonghu-stage</display-name>
+
+    <!-- 编码过滤器 -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+
+            <param-value>UTF-8</param-value>
+
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- token 验证过滤 -->
+
+    <!-- AJAX请求过滤器  开始 -->
+    <filter>
+        <filter-name>ajaxSessionTimeoutFilter</filter-name>
+        <filter-class>com.tonghu.pub.common.filter.AjaxSessionTimeoutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ajaxSessionTimeoutFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- AJAX请求过滤器  结束 -->
+
+    <context-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>classpath*:configs/spring-tonghu-stage-application.xml</param-value>
+     </context-param>
+     <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+     </listener>
+    <!-- Spring 刷新Introspector防止内存泄露 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+     <!-- Spring MVC -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:configs/spring-tonghu-stage-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- 权限过滤器配置  开始 -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 权限过滤器配置  结束 -->
+
+    <!-- 防止一个账号多次登陆 ,控制一个用户同时只能登录一次，不能在其他地方重新登录   servelt容器将会通知Spring Security session生命周期的事件 -->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+
+
+    <!--设置不使用缓存的过滤器配置  开始 -->
+    <filter>
+        <filter-name>ForceNoCacheFilter</filter-name>
+        <filter-class>com.tonghu.pub.common.filter.ForceNoCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ForceNoCacheFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ForceNoCacheFilter</filter-name>
+        <url-pattern>*.ftl</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ForceNoCacheFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+    <!--设置不使用缓存的过滤器配置  结束 -->
+
+    <!-- 生成用户操作界面中的左侧菜单 开始 -->
+    <filter>
+        <filter-name>CreateMenuFilter</filter-name>
+        <filter-class>com.tonghu.app.stage.filter.CreateMenuFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CreateMenuFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <!-- 生成用户操作界面中的左侧菜单 结束 -->
+
+
+    <!-- session超时时间 分钟 -->
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!--
+    <error-page>
+        <error-code>404</error-code>
+        <location>/common/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/common/403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/common/500.jsp</location>
+    </error-page>
+    -->
+
+</web-app>

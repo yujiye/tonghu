@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="usersDao">
+	<resultMap id="userInfoResult" type="users">
+		<id property="id" column="id"/>
+		<result property="userName" column="user_name"/>
+		<result property="password" column="password"/>
+		<result property="userEmail" column="user_email"/>
+		<result property="trueName" column="true_name"/>
+		<result property="userMobile" column="user_mobile"/>
+		<result property="userPhone" column="user_phone"/>
+		<result property="isLock" column="is_lock"/>
+		<result property="editable" column="editable"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateUserId" column="update_userid"/>
+		<result property="note" column="note"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, user_name, password, user_email, true_name, user_mobile, user_phone, 
+		is_lock, editable, create_time, create_userid, update_time, update_userid, note
+    </sql>
+  
+	<insert id="insertNewUser" parameterType="users" useGeneratedKeys="true" keyProperty="id">
+		insert into users (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="userName != null">
+				user_name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="userEmail != null">
+				user_email,
+			</if>
+			<if test="trueName != null">
+				true_name,
+			</if>
+			<if test="userMobile != null">
+				user_mobile,
+			</if>
+			<if test="userPhone != null">
+				user_phone,
+			</if>
+			<if test="isLock != null">
+				is_lock,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUserId != null">
+				create_userid,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_userid,
+			</if>
+			<if test="note != null">
+				note,
+			</if>
+			editable
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+		   <if test="userName != null">
+				#{userName},
+			</if>
+			<if test="password != null">
+				#{password},
+			</if>
+			<if test="userEmail != null">
+				#{userEmail},
+			</if>
+			<if test="trueName != null">
+				#{trueName},
+			</if>
+			<if test="userMobile != null">
+				#{userMobile},
+			</if>
+			<if test="userPhone != null">
+				#{userPhone},
+			</if>
+			<if test="isLock != null">
+				#{isLock},
+			</if>
+			<if test="createTime != null">
+				#{createTime},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="note != null">
+				#{note},
+			</if>
+			1
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 获取所有用户信息 -->
+	<select id="selectAllUser" resultType="users" resultMap="userInfoResult">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users 
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 根据检索条件精确查找获取系统用户的数量 -->
+	<select id="selectUserCountByQueryForCheck" resultType="Integer" parameterType="usersQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			users 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id <> #{id} ]]>
+			</if>
+			<if test="userName !=null">
+				AND user_name = #{userName}
+			</if>
+			<if test="userEmail !=null">
+				AND user_email = #{userEmail}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据检索条件获取系统用户的数量 -->
+	<select id="selectUsersCountByQuery" resultType="Integer" parameterType="usersQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			users 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="isLock != null">
+				AND <![CDATA[ is_lock = #{isLock} ]]>
+			</if>
+			<if test="userName !=null">
+				AND user_name like CONCAT('%','${userName}','%' )
+			</if>
+			<if test="userEmail !=null">
+				AND user_email like CONCAT('%','${userEmail}','%' )
+			</if>
+			<if test="trueName !=null">
+				AND true_name like CONCAT('%','${trueName}','%' )
+			</if>
+			<if test="userMobile !=null">
+				AND user_mobile like CONCAT('%','${userMobile}','%' )
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据ID获取系统用户的信息 -->
+	<select id="selectUserInfoById" resultType="users" resultMap="userInfoResult" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users
+		WHERE id = #{id} 
+	</select>
+	
+	<!-- 根据ID集合获取系统用户的信息 -->
+	<select id="selectUserInfoByIdList" resultType="users" resultMap="userInfoResult" parameterType="java.util.List">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users
+		WHERE id IN
+			<foreach collection="list" item="id"
+				open="(" separator="," close=")">
+				#{id}
+			</foreach> 
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 根据用户登录名获取系统用户的信息 -->
+	<select id="selectUserInfoByUserName" resultType="users" resultMap="userInfoResult" parameterType="string">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users
+		WHERE user_name = #{userName}
+    </select>
+    
+    <!-- 根据用户电子邮箱获取系统用户的信息 -->
+    <select id="selectUserInfoByUserEmail" resultType="users" resultMap="userInfoResult" parameterType="string">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users
+		WHERE user_email = #{userEmail}
+    </select>
+    
+    <!-- 根据用户所属的机构id查询用户的数量 -->
+    <select id="selectUsersCountByOrgId" resultType="Integer" parameterType="long">
+		SELECT 
+			count(1) 
+		FROM 
+			users
+		WHERE org_id = #{orgId}
+    </select>
+    
+    <!-- 根据检索条件获取系统用户的信息 -->
+	<select id="selectUsersInfoByQuery" resultType="users" resultMap="userInfoResult" parameterType="usersQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			users
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="isLock != null">
+				AND <![CDATA[ is_lock = #{isLock} ]]>
+			</if>
+			<if test="userName !=null">
+				AND user_name like CONCAT('%','${userName}','%' )
+			</if>
+			<if test="userEmail !=null">
+				AND user_email like CONCAT('%','${userEmail}','%' )
+			</if>
+			<if test="trueName !=null">
+				AND true_name like CONCAT('%','${trueName}','%' )
+			</if>
+			<if test="userMobile !=null">
+				AND user_mobile like CONCAT('%','${userMobile}','%' )
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType != 1">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id DESC
+			</otherwise>
+		</choose>
+		<if
+			test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+    </select>
+    
+    <!-- 根据用户ID更新用户信息 -->
+    <update id="updateUserInfoById" parameterType="users">
+    	update users set
+			<trim suffix="" suffixOverrides=",">
+				<if test="userName != null and userName != ''">
+					user_name = #{userName},
+				</if>
+				<if test="password != null">
+					password = #{password},
+				</if>
+				user_email = #{userEmail},
+				true_name = #{trueName},
+				user_mobile = #{userMobile},
+				user_phone = #{userPhone},
+				<if test="isLock != null">
+					is_lock = #{isLock},
+				</if>
+				<if test="editable != null">
+					editable = #{editable},
+				</if>
+				update_time = NOW(),
+				<if test="updateUserId != null">
+					update_userid = #{updateUserId},
+				</if>
+				<if test="note != null">
+					note = #{note},
+				</if>
+			</trim>
+			where id = #{id} AND editable = 1
+    </update>
+    
+    <!-- 根据用户ID更新用户密码信息 -->
+    <update id="updateUserPasswordById" parameterType="users">
+    	update users set password = #{password} where id = #{id}
+    </update>
+    
+    <!-- 根据用户ID删除用户信息 物理删除 -->
+    <delete id="deleteUserById" parameterType="long">
+    	DELETE FROM users WHERE id = #{id} AND editable = 1
+    </delete>
+</mapper>

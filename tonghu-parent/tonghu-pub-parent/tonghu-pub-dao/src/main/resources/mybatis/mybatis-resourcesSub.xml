@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="resourcesSubDao">
+	<resultMap id="subResourcesInfoResult" type="resourcesSub">
+		<id property="id" column="id"/>
+		<result property="subResourceName" column="sub_resource_name"/>
+		<result property="subResourceUrl" column="sub_resource_url"/>
+		<result property="resourceId" column="resource_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateUserId" column="update_userid"/>
+		<result property="note" column="note"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, sub_resource_name, sub_resource_url, resource_id, create_time, create_userid, update_time, update_userid, note
+  </sql>
+  
+	<insert id="insertResourcesInfo" parameterType="resources" useGeneratedKeys="true" keyProperty="id">
+		insert into resources_sub (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="subResourceName != null">
+				sub_resource_name,
+			</if>
+			<if test="subResourceUrl != null">
+				sub_resource_url,
+			</if>
+			<if test="resourceId != null">
+				resource_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUserId != null">
+				create_userid,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_userid,
+			</if>
+			<if test="note != null">
+				note,
+			</if>
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+		   <if test="subResourceName != null">
+				#{subResourceName},
+			</if>
+			<if test="subResourceUrl != null">
+				#{subResourceUrl},
+			</if>
+			<if test="resourceId != null">
+				#{resourceId},
+			</if>
+			<if test="createTime != null">
+				#{createTime},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId},
+			</if>
+			<if test="note != null">
+				#{note},
+			</if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 获取所有的系统资源信息 -->
+	<select id="selectAllSubResources" resultMap="subResourcesInfoResult" resultType="resourcesSub">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			resources_sub 
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 获取用户登录后默认可以访问的资源，不受角色限制 -->
+	<select id="selectSubResourcesByRIdList" resultMap="subResourcesInfoResult" resultType="resourcesSub" parameterType="java.util.List">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			resources_sub 
+		WHERE resource_id IN
+			<foreach collection="list" item="resourceId"
+				open="(" separator="," close=")">
+				#{resourceId}
+			</foreach> 
+		ORDER BY resource_id ASC
+	</select>
+	
+</mapper>

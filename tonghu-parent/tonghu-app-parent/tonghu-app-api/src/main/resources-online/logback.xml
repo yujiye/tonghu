@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  debug="true" scan="true" scanPeriod="30 minutes">
+
+<!-- ==================================================================================== -->
+    <property name="logDir" value="/usr/local/tomcat/logs/tonghu/api/"/>
+	<!-- 打印到控制台 -->
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</layout>
+	</appender>
+	
+<!-- ==================================================================================== -->
+	<appender name="infolog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+			<level>INFO</level>   
+		</filter>   
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logDir}/info/log.%d{yyyy-MM-dd.HH}.%i.log.gz</fileNamePattern> 
+			<maxHistory>2160</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>    
+		</encoder>
+	</appender>
+	
+    <appender name="debuglog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+   	 	<Encoding>UTF-8</Encoding>
+   	 	<filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+			<level>DEBUG</level>   
+		</filter>   
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      	<fileNamePattern>${logDir}/debug/log.%d{yyyy-MM-dd.HH}.%i.log.gz</fileNamePattern>
+	      	<maxHistory>2160</maxHistory>
+	      	<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+	    </rollingPolicy>
+	    <encoder>
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	 </appender>
+
+    <appender name="errorlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<Encoding>UTF-8</Encoding>
+   	 	<filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+			<level>ERROR</level>   
+		</filter>   
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	      	<fileNamePattern>${logDir}/error/log.%d{yyyy-MM-dd.HH}.%i.log.gz</fileNamePattern>
+	      	<maxHistory>2160</maxHistory>
+	      	<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+	    </rollingPolicy>
+	    <encoder>
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+    </appender>
+
+	<!-- sql日志打印 -->
+	<appender name="sqlLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logDir}/monitor/sql/log.%d{yyyy-MM-dd.HH}.%i.log.gz</fileNamePattern>
+			<!-- 限制文件最大保存时间为30天 30*24=720个文件-->
+			<maxHistory>720</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<!-- 对记录事件进行格式化 -->
+		<encoder>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="socketServerLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logDir}/socketServer/log.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+<!-- ==================================================================================== -->
+	
+	<root level="DEBUG">
+		<appender-ref ref="infolog" />  
+		<appender-ref ref="errorlog" /> 
+		<appender-ref ref="stdout" />
+	</root>
+
+	<!-- SQL日志打印 -->
+	<logger name="org.apache.ibatis.plugin.Interceptor" level="DEBUG">
+		<appender-ref ref="sqlLog" />
+	</logger>
+	 
+	<!-- 第三方日志级别的控制 -->
+	<logger name="java.sql" level="DEBUG" />
+
+	<logger name="socketServerLog" level="info" additivity="false">
+		<appender-ref ref="socketServerLog" />
+	</logger>
+</configuration>

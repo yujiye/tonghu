@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="monitorSqlLogDao">
+	<resultMap id="monitorSqlLogInfoResult" type="monitorSqlLog">
+		<id property="id" column="id"/>
+		<result property="innerSerialId" column="inner_serial_id"/>
+		<result property="sqlCommandType" column="sql_command_type"/>
+		<result property="sqlStr" column="sql_str"/>
+		<result property="parameters" column="parameters"/>
+		<result property="mybatisSqlId" column="mybatis_sql_id"/>
+		<result property="fileResource" column="file_resource"/>
+		<result property="dataSource" column="data_source"/>
+		<result property="timeCost" column="time_cost"/>
+		<result property="createTime" column="create_time"/>
+		<result property="sqlStartTime" column="sql_start_time"/>
+		<result property="sqlEndTime" column="sql_end_time"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, inner_serial_id, sql_command_type, sql_str, parameters, mybatis_sql_id, file_resource, 
+		data_source, time_cost, create_time, sql_start_time, sql_end_time
+    </sql>
+  
+	<insert id="insertMonitorSqlLog" parameterType="monitorSqlLog" useGeneratedKeys="true" keyProperty="id">
+		insert into monitor_sql_log (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="innerSerialId != null">
+				inner_serial_id,
+			</if>
+			<if test="sqlCommandType != null">
+				sql_command_type,
+			</if>
+			<if test="sqlStr != null">
+				sql_str,
+			</if>
+			<if test="parameters != null">
+				parameters,
+			</if>
+			<if test="mybatisSqlId != null">
+				mybatis_sql_id,
+			</if>
+			<if test="fileResource != null">
+				file_resource,
+			</if>
+			<if test="dataSource != null">
+				data_source,
+			</if>
+			<if test="timeCost != null">
+				time_cost,
+			</if>
+			<if test="sqlStartTime != null">
+				sql_start_time,
+			</if>
+			<if test="sqlEndTime != null">
+				sql_end_time, 
+			</if>
+			create_time,
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+			<if test="innerSerialId != null">
+				#{innerSerialId},
+			</if>
+			<if test="sqlCommandType != null">
+				#{sqlCommandType},
+			</if>
+			<if test="sqlStr != null">
+				#{sqlStr},
+			</if>
+			<if test="parameters != null">
+				#{parameters},
+			</if>
+			<if test="mybatisSqlId != null">
+				#{mybatisSqlId},
+			</if>
+			<if test="fileResource != null">
+				#{fileResource},
+			</if>
+			<if test="dataSource != null">
+				#{dataSource},
+			</if>
+			<if test="timeCost != null">
+				#{timeCost},
+			</if>
+			<if test="sqlStartTime != null">
+				#{sqlStartTime},
+			</if>
+			<if test="sqlEndTime != null">
+				#{sqlEndTime},
+			</if>
+			NOW(),
+		</trim>
+		)
+	</insert>
+	
+	<!-- 根据检索条件获取监控日志的数量 -->
+	<select id="selectMonitorSqlLongCountByQuery" resultType="Integer" parameterType="monitorSqlLogQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			monitor_sql_log 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="innerSerialId != null">
+				AND <![CDATA[ inner_serial_id = #{innerSerialId} ]]>
+			</if>
+			<if test="sqlCommandType !=null">
+				AND <![CDATA[ sql_command_type = #{sqlCommandType} ]]>
+			</if>
+			<if test="sqlStr !=null">
+				AND sql_str like CONCAT('%','${sqlStr}','%' )
+			</if>
+			<if test="mybatisSqlId != null">
+				AND <![CDATA[ mybatis_sql_id = #{mybatisSqlId} ]]>
+			</if>
+			<if test="sqlStartTime !=null">
+				AND <![CDATA[ sql_start_time >= DATE_FORMAT('${sqlStartTime}','%Y-%m-%d %T') ]]>
+			</if>
+			<if test="sqlEndTime !=null">
+				AND <![CDATA[ sql_end_time <= DATE_FORMAT('${sqlEndTime}','%Y-%m-%d %T') ]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据检索条件获取日志的信息 -->
+	<select id="selectReceiverLogInfoByQuery" resultType="monitorSqlLogQuery" 
+				resultMap="monitorSqlLogInfoResult" parameterType="monitorSqlLogQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			receiver_log 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="innerSerialId != null">
+				AND <![CDATA[ inner_serial_id = #{innerSerialId} ]]>
+			</if>
+			<if test="sqlCommandType !=null">
+				AND <![CDATA[ sql_command_type = #{sqlCommandType} ]]>
+			</if>
+			<if test="sqlStr !=null">
+				AND sql_str like CONCAT('%','${sqlStr}','%' )
+			</if>
+			<if test="mybatisSqlId != null">
+				AND <![CDATA[ mybatis_sql_id = #{mybatisSqlId} ]]>
+			</if>
+			<if test="sqlStartTime !=null">
+				AND <![CDATA[ sql_start_time >= DATE_FORMAT('${sqlStartTime}','%Y-%m-%d %T') ]]>
+			</if>
+			<if test="sqlEndTime !=null">
+				AND <![CDATA[ sql_end_time <= DATE_FORMAT('${sqlEndTime}','%Y-%m-%d %T') ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		<if
+			test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+</mapper>

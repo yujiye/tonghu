@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 全局映射器启用缓存 -->
+		<setting name="cacheEnabled" value="true" />
+		<!-- 查询时，关闭关联对象即时加载以提高性能 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指 定)，不会加载关联表的所有字段，以提高性能 -->
+		<setting name="aggressiveLazyLoading" value="false" />
+		<!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<!-- 允许使用列标签代替列名 -->
+		<setting name="useColumnLabel" value="true" />
+		<!-- 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，数据表的PK生成策略将被覆盖 -->
+		<setting name="useGeneratedKeys" value="true" />
+		<!-- 给予被嵌套的resultMap以字段-属性的映射支持 -->
+		<setting name="autoMappingBehavior" value="FULL" />
+		<!-- 对于批量更新操作缓存SQL以提高性能 -->
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<!-- 数据库超过25000秒仍未响应则超时 -->
+		<setting name="defaultStatementTimeout" value="20" />
+	</settings>
+	
+	<typeAliases>
+		<!-- 系统服务访问监控日志信息对象
+		<typeAlias alias="monitorReceiverLog" type="com.tonghu.pub.model.dblog.po.MonitorReceiverLog" /> -->
+		<!-- 系统SQL执行监控日志信息对象
+		<typeAlias alias="monitorSqlLog" type="com.tonghu.pub.model.dblog.po.MonitorSqlLog" />-->
+		<!-- 系统用户信息对象 -->
+		<typeAlias alias="users" type="com.tonghu.pub.model.security.po.Users" />
+		<!-- 系统资源信息对象 -->
+		<typeAlias alias="resources" type="com.tonghu.pub.model.security.po.Resources" />
+		<!-- 系统角色信息对象 -->
+		<typeAlias alias="roles" type="com.tonghu.pub.model.security.po.Roles" />
+		<!-- 系统用户与角色关联信息对象 -->
+		<typeAlias alias="userRole" type="com.tonghu.pub.model.security.po.UserRole" />
+		<!-- 系统角色与资源关联信息对象 -->
+		<typeAlias alias="roleResource" type="com.tonghu.pub.model.security.po.RoleResource" />
+		<!-- 系统子资源信息对象 -->
+		<typeAlias alias="resourcesSub" type="com.tonghu.pub.model.security.po.ResourcesSub" />
+		<!-- 资源模块信息对象 -->
+		<typeAlias alias="resourceModule" type="com.tonghu.pub.model.security.po.ResourceModule" />
+		<!-- 系统日志信息对象 -->
+		<typeAlias alias="sysLog" type="com.tonghu.pub.model.security.po.SysLog" />
+
+		<!-- 作业日志信息对象 -->
+		<typeAlias alias="jobLog" type="com.tonghu.pub.model.common.po.JobLog" />
+		<!-- 作业详细日志信息对象 -->
+		<typeAlias alias="jobLogDetail" type="com.tonghu.pub.model.common.po.JobLogDetail" />
+
+		<!-- 附件信息对象 -->
+		<typeAlias alias="attachment" type="com.tonghu.pub.model.common.po.Attachment" />
+		<!-- 系统配置项对象 -->
+		<typeAlias alias="sysConfig" type="com.tonghu.pub.model.common.po.SysConfig" />
+
+		<typeAlias alias="positionTest" type="com.tonghu.pub.model.business.po.PositionTest" />
+
+
+
+		<!-- 检索系统用户记录查询对象 -->
+		<typeAlias alias="usersQuery" type="com.tonghu.pub.model.security.po.query.UsersQuery" />
+		<!-- 检索系统用户记录查询对象 -->
+		<typeAlias alias="rolesQuery" type="com.tonghu.pub.model.security.po.query.RolesQuery" />
+		<!-- 检索系统用户角色关联记录查询对象 -->
+		<typeAlias alias="userRoleQuery" type="com.tonghu.pub.model.security.po.query.UserRoleQuery" />
+		<!-- 检索系统资源记录查询对象 -->
+		<typeAlias alias="resourcesQuery" type="com.tonghu.pub.model.security.po.query.ResourcesQuery" />
+		<!-- 系统日志记录查询对象 -->
+		<typeAlias alias="sysLogQuery" type="com.tonghu.pub.model.security.po.query.SysLogQuery" />
+		<!-- 系统JobLog日志记录查询对象 -->
+		<typeAlias alias="jobLogQuery" type="com.tonghu.pub.model.common.po.query.JobLogQuery" />
+		<!-- 附件查询对象 -->
+		<typeAlias alias="attachmentQuery" type="com.tonghu.pub.model.common.po.query.AttachmentQuery" />
+		<!-- 系统服务访问监控日志查询对象
+		<typeAlias alias="monitorReceiverLogQuery" type="com.experts.dblog.po.query.MonitorReceiverLogQuery" />-->
+		<!-- 系统SQL执行监控日志查询对象
+		<typeAlias alias="monitorSqlLogQuery" type="com.experts.dblog.po.query.MonitorSqlLogQuery" />-->
+
+		
+	</typeAliases>
+
+	<!-- <plugins>
+		<plugin interceptor="com.experts.common.mybatis.interceptor.StaticsSqlInterceptor" />
+	</plugins>-->
+	
+	<mappers>
+		<!-- 系统服务访问监控日志
+	    <mapper resource="mybatis/mybatis-monitorReceiverLog.xml" />-->
+	    <!-- 系统SQL执行监控日志
+	    <mapper resource="mybatis/mybatis-monitorSqlLog.xml" />-->
+		<!-- 系统用户信息 -->
+		<mapper resource="mybatis/mybatis-users.xml" />
+		<!-- 系统资源信息 -->
+		<mapper resource="mybatis/mybatis-resources.xml" />
+		<!-- 系统角色信息 -->
+		<mapper resource="mybatis/mybatis-roles.xml" />
+		<!-- 系统用户与角色关联信息 -->
+		<mapper resource="mybatis/mybatis-userRole.xml" />
+		<!-- 系统角色与资源关联信息 -->
+		<mapper resource="mybatis/mybatis-roleResource.xml" />
+		<!-- 系统子资源信息 -->
+		<mapper resource="mybatis/mybatis-resourcesSub.xml" />
+		<!-- 资源模块信息 -->
+		<mapper resource="mybatis/mybatis-resourceModule.xml" />
+		<!-- 系统日志信息 -->
+		<mapper resource="mybatis/mybatis-sysLog.xml" />
+		<!-- 作业日志信息 -->
+		<mapper resource="mybatis/mybatis-jobLog.xml" />
+		<!-- 作业详细日志信息 -->
+		<mapper resource="mybatis/mybatis-jobLogDetail.xml" />
+		<!-- 系统附件信息 -->
+		<mapper resource="mybatis/mybatis-attachment.xml" />
+		<!-- 系统配置项信息 -->
+		<mapper resource="mybatis/mybatis-sysConfig.xml" />
+
+		<mapper resource="mybatis/mybatis-positionTest.xml" />
+	</mappers>
+</configuration> 

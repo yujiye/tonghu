@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="sysConfigDao">
+	<resultMap id="sysConfigResult" type="sysConfig">
+		<id property="id" column="id"/>
+		<result property="configItem" column="config_item"/>
+		<result property="configName" column="config_name"/>
+		<result property="configValue" column="config_value"/>
+		<result property="valueType" column="value_type"/>
+		<result property="configNote" column="config_note"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateUserId" column="update_userid"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, config_item, config_name, config_value, value_type, config_note,
+		create_time, create_userid, update_time, update_userid
+    </sql>
+    
+	<!-- 获取所有系统配置信息 -->
+	<select id="selectAllSysConfigInfo" resultMap="sysConfigResult" resultType="sysConfig">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			sys_config
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 根据配置项获取配置信息 -->
+	<select id="selectSysConfigById" resultMap="sysConfigResult"
+			resultType="sysConfig" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM
+			sys_config
+		WHERE id = #{id}
+	</select>
+
+	<!-- 根据配置项获取配置信息 -->
+	<select id="selectSysConfigByConfigItem" resultMap="sysConfigResult"
+			resultType="sysConfig" parameterType="string">
+		SELECT
+		<include refid="allColumn"/>
+		FROM
+		sys_config
+		WHERE config_item = #{configItem}
+	</select>
+	
+	<!-- 根据配置项更新配置值 -->
+    <update id="updateSysConfigByConfigItem" parameterType="sysConfig">
+    	UPDATE sys_config SET
+			config_value = #{configValue},
+			update_time = NOW(),
+			update_userid = #{updateUserId}
+		WHERE config_item = #{configItem}
+    </update>
+	
+</mapper>

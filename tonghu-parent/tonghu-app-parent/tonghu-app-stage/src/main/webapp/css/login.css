@@ -1,0 +1,458 @@
+
+body, h1, h2, h3, h4, h5, h6, p, dl, dt, dd, ul, ol, li, del, form, th, td {
+    margin: 0;
+    padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+del {
+    text-decoration: none;
+}
+em, i {
+    font-style: normal;
+}
+ul, ol, li {
+    list-style: none outside none;
+}
+img {
+    border: medium none;
+}
+button, input, select, textarea {
+    font-size: 100%;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.clear {
+    clear: both;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    visibility: hidden;
+}
+.clearfix {
+}
+body {
+    color: #404040;
+    font: 12px/18px "微软雅黑",Arial,"宋体";
+}
+a {
+    color: #1a66b3;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.imageElement {
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+.hidden {
+    display: none;
+}
+.footer {
+    color: #032d31;
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+}
+.footer_mt120 {
+    margin-top: 120px;
+}
+body.rbac, body.sso {
+    background: url("../img/bg_login.png") repeat-x scroll 0 0 #07545b;
+}
+.login_wrap {
+    margin: 200px auto 10px;
+    position: relative;
+    width: 400px;
+}
+.rbac_cont {
+    position: relative;
+    width: 400px;
+}
+.c_top {
+    background: url("../img/bg_login_rbac.png") repeat-x scroll 0 0 #212120;
+    height: 53px;
+    position: relative;
+}
+.c_top a img {
+    left: 15px;
+    position: absolute;
+    top: 11px;
+}
+.c_top h1 {
+    background: url("../img/bg_font.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    height: 19px;
+    left: 125px;
+    position: absolute;
+    text-indent: -9999px;
+    top: 18px;
+    width: 149px;
+}
+.c_middle {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("../img/bg_login_rbac.png") repeat-x scroll 0 -73px #212120;
+    border-color: #4a4f54;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 0;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 15px;
+}
+.c_middle p {
+    margin: 25px 0;
+    position: relative;
+}
+.c_middle p.special {
+    margin: -2px 0 27px;
+}
+.c_middle label {
+    display: block;
+    left: 10px;
+    position: relative;
+}
+.c_middle input {
+    border: 0 none;
+    color: #999;
+    font: 16px/36px "微软雅黑",Arial;
+    height: 37px;
+    margin: 10px 0 0;
+    padding: 0 0 0 10px;
+    width: 355px;
+}
+.c_middle .prompt {
+    color: #999;
+    left: 10px;
+    position: absolute;
+    top: 38px;
+}
+.c_middle .error {
+    color: #f36262;
+    display: inline-block;
+    font-size: 13px;
+    height: 18px;
+    left: 80px;
+    line-height: 18px;
+    padding-left: 20px;
+    position: absolute;
+    top: 2px;
+}
+.c_middle .mail {
+    background: url("../img/bg_btns.png") no-repeat scroll 0 -233px rgba(0, 0, 0, 0);
+    display: none;
+    height: 34px;
+    left: 217px;
+    position: absolute;
+    top: 31px;
+    width: 149px;
+}
+.c_bottom {
+    background: url("../img/bg_login_rbac.png") repeat-x scroll 0 -288px #232423;
+    height: 66px;
+    position: relative;
+}
+.c_bottom p {
+    padding-top: 10px;
+    text-align: center;
+}
+.c_bottom p input {
+    border: 0 none;
+    color: #666;
+    cursor: pointer;
+    display: inline-block;
+    font: bold 16px/36px "微软雅黑";
+    height: 42px;
+    text-align: center;
+    width: 150px;
+}
+.info {
+    margin: 30px auto 10px;
+    padding-left: 15px;
+}
+.info p {
+    background: url("../img/bg_icons.png") no-repeat scroll 0 -22px rgba(0, 0, 0, 0);
+    color: #6f9f93;
+    line-height: 1.8;
+    padding-left: 10px;
+}
+.sso .c_top {
+    background: url("../img/bg_login_sso.png") repeat-x scroll 0 0 #d9d9ce;
+}
+.sso .c_top .c_top_middle {
+    font-size: 24px;
+    margin: 18px 18px;
+    position: absolute;
+    color: #474389;
+    font-weight: bold;
+}
+.sso .c_top_radius {
+    background: url("../img/bg_radius.png") no-repeat scroll 0 -36px rgba(0, 0, 0, 0);
+}
+.sso .c_top h1 {
+    background-position: 0 -30px;
+}
+.sso .c_middle {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("../img/bg_login_sso.png") repeat-x scroll 0 -73px #cecec6;
+    border-color: #cdc9be;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 0;
+    color: #666;
+}
+.sso .c_middle input {
+    background-position: 0 -233px;
+}
+.sso .c_middle .p_special input {
+    background-position: 0 -233px;
+}
+.sso .c_middle .p_special .password {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.sso .c_bottom {
+    background: url("../img/bg_login_sso.png") repeat-x scroll 0 -288px #d5d5c8;
+}
+.sso .c_bottom_radius {
+    background: url("../img/bg_radius.png") no-repeat scroll 0 -50px rgba(0, 0, 0, 0);
+}
+.sso .c_bottom p input {
+    background-position: 0 -146px;
+    height: 48px;
+    width: 158px;
+}
+.sso .c_middle p.link {
+    color: #666;
+    font-size: 12px;
+    height: 18px;
+    left: 0;
+    line-height: 18px;
+    margin: 0;
+    position: absolute;
+    text-align: center;
+    top: 238px;
+    width: 400px;
+}
+.sso .c_middle .link a {
+    color: #666;
+    display: inline-block;
+    font-weight: bold;
+    height: 18px;
+    line-height: 18px;
+    padding-left: 18px;
+}
+body.sso {
+    background: none repeat scroll 0 0 #067983;
+    font: 12px/18px "微软雅黑","宋体",Arial;
+}
+.sso_wrap {
+    margin: 0 auto;
+    width: 960px;
+}
+.sso_wrap .title {
+    color: #fff;
+    margin-top: 20px;
+}
+.sso_wrap .title .logo {
+    float: left;
+}
+.sso_wrap .title .login {
+    float: right;
+    height: 30px;
+    line-height: 30px;
+}
+.sso_wrap .title .login img {
+    border: 1px solid #fff;
+    display: inline-block;
+    height: 28px;
+    vertical-align: middle;
+    width: 28px;
+}
+.sso_wrap .title .login span {
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+.sso_wrap .title .login a {
+    background: url("../img/bg_btns.png") no-repeat scroll 0 -204px rgba(0, 0, 0, 0);
+    border: 1px solid #113236;
+    display: inline-block;
+    height: 19px;
+    margin-left: 15px;
+    vertical-align: middle;
+    width: 52px;
+}
+.sso_wrap .title .login a strong {
+    display: none;
+}
+.main {
+    padding-top: 80px;
+}
+.main table {
+}
+.main th, .main td {
+    padding: 1px;
+}
+.main table img {
+    vertical-align: middle;
+}
+.main table a {
+    display: block;
+    height: 73px;
+    width: 188px;
+}
+.main table a span {
+    display: none;
+}
+.btn_blue {
+    background: url("../img/btns/l1_normal.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: default;
+}
+.btn_green {
+    background: url("../img/btns/l2_normal.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: default;
+}
+.btn_orange {
+    background: url("../img/btns/l3_normal.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: default;
+}
+.btn_twiki {
+    background: url("../img/btns/l11.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_twiki:hover {
+    background: url("../img/btns/l11_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_bugzilla {
+    background: url("../img/btns/l12.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_bugzilla:hover {
+    background: url("../img/btns/l12_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_pdlc {
+    background: url("../img/btns/l13.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_pdlc:hover {
+    background: url("../img/btns/l13_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_ddclick {
+    background: url("../img/btns/l21.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_ddclick:hover {
+    background: url("../img/btns/l21_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_sjpt {
+    background: url("../img/btns/l22.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_sjpt:hover {
+    background: url("../img/btns/l22_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cbwht {
+    background: url("../img/btns/l31.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cbwht:hover {
+    background: url("../img/btns/l31_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_zybhht {
+    background: url("../img/btns/l32.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_zybhht:hover {
+    background: url("../img/btns/l32_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cxht {
+    background: url("../img/btns/l33.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cxht:hover {
+    background: url("../img/btns/l33_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_scht {
+    background: url("../img/btns/l41.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_scht:hover {
+    background: url("../img/btns/l41_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_sctjht {
+    background: url("../img/btns/l42.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_sctjht:hover {
+    background: url("../img/btns/l42_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_ght {
+    background: url("../img/btns/l43.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_ght:hover {
+    background: url("../img/btns/l43_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cxtht {
+    background: url("../img/btns/l44.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.btn_cxtht:hover {
+    background: url("../img/btns/l44_hover.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.c_top_radius {
+    background: url("../img/bg_radius.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block;
+    font-size: 0;
+    height: 4px;
+    left: 0;
+    line-height: 4px;
+    position: absolute;
+    top: 0;
+    width: 400px;
+}
+.c_bottom_radius {
+    background: url("../img/bg_radius.png") no-repeat scroll 0 -14px rgba(0, 0, 0, 0);
+    bottom: -11px;
+    display: block;
+    height: 11px;
+    left: 0;
+    position: absolute;
+    width: 400px;
+}
+.c_middle input {
+    background: url("../img/bg_btns.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    width: 357px;
+}
+.c_bottom p input {
+    background: url("../img/bg_btns.png") no-repeat scroll 0 -47px rgba(0, 0, 0, 0);
+    height: 42px;
+    width: 153px;
+}
+.rbac_cont_shadow {
+    background: url("../img/bg_login_shadow.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    height: 334px;
+    position: absolute;
+    right: -3px;
+    top: 0;
+    width: 7px;
+    z-index: -1;
+}
+.c_middle .prompt {
+}
+.c_middle .error {
+}
+.sso .c_middle .link {
+}
+.sso .c_middle .link a {
+}

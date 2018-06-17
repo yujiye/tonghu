@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="sysLogDao">
+	<resultMap id="sysLogInfoResult" type="sysLog">
+		<id property="id" column="id"/>
+		<result property="innerSerialId" column="inner_serial_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="userIp" column="user_ip"/>
+		<result property="operatorType" column="operator_type"/>
+		<result property="content" column="content"/>
+		<result property="isSuccess" column="is_success"/>
+		<result property="cause" column="cause"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, inner_serial_id, user_id, user_ip, operator_type, content, is_success, cause, create_time
+    </sql>
+  
+  	<!-- 新增系统日志信息 -->
+	<insert id="insertNewSysLog" parameterType="sysLog" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_log (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="innerSerialId != null">
+				inner_serial_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userIp != null">
+				user_ip,
+			</if>
+			<if test="operatorType != null">
+				operator_type,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="isSuccess != null">
+				is_success,
+			</if>
+			<if test="cause != null">
+				cause,
+			</if>
+			create_time
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+		   <if test="innerSerialId != null">
+				#{innerSerialId},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="userIp != null">
+				#{userIp},
+			</if>
+			<if test="operatorType != null">
+				#{operatorType},
+			</if>
+			<if test="content != null">
+				#{content},
+			</if>
+			<if test="isSuccess != null">
+				#{isSuccess},
+			</if>
+			<if test="cause != null">
+				#{cause},
+			</if>
+			NOW()
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 根据系统日志id获取系统日志信息 -->
+	<select id="selectSysLogById" resultMap="sysLogInfoResult" resultType="sysLog" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			sys_log
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 根据检索条件获取系统日志的数量 -->
+	<select id="selectSysLogCountByQuery" resultType="Integer" parameterType="sysLogQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			sys_log 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="userId !=null">
+				AND <![CDATA[ user_id = #{userId} ]]>
+			</if>
+			<if test="userIp !=null">
+				AND <![CDATA[ user_ip = #{userIp} ]]>
+			</if>
+			<if test="isSuccess !=null">
+				AND <![CDATA[ is_success = #{isSuccess} ]]>
+			</if>
+			<if test="createTimeStart != null">
+				AND <![CDATA[ create_time >= #{createTimeStart} ]]>
+			</if>
+			<if test="createTimeEnd != null">
+				AND <![CDATA[ create_time <= #{createTimeEnd} ]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据检索条件获取系统日志的信息 -->
+	<select id="selectSysLogInfoByQuery" resultType="sysLog" resultMap="sysLogInfoResult" parameterType="sysLogQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			sys_log 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="userId !=null">
+				AND <![CDATA[ user_id = #{userId} ]]>
+			</if>
+			<if test="userIp !=null">
+				AND <![CDATA[ user_ip = #{userIp} ]]>
+			</if>
+			<if test="isSuccess !=null">
+				AND <![CDATA[ is_success = #{isSuccess} ]]>
+			</if>
+			<if test="createTimeStart != null">
+				AND <![CDATA[ create_time >= #{createTimeStart} ]]>
+			</if>
+			<if test="createTimeEnd != null">
+				AND <![CDATA[ create_time <= #{createTimeEnd} ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		<if
+			test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+	
+    <!-- 根据系统日志ID删除系统日志信息 物理删除 -->
+    <delete id="deleteSysLogById" parameterType="long">
+    	DELETE FROM sys_log WHERE id = #{id}
+    </delete>
+	
+</mapper>

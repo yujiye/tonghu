@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="jobLogDao">
+	<resultMap id="jobLogResult" type="jobLog">
+		<result property="id" column="id"/>
+		<result property="jobSequenceNo" column="job_sequence_no"/>
+		<result property="jobName" column="job_name"/>
+		<result property="status" column="status"/>
+		<result property="note" column="note"/>
+		<result property="totalTask" column="total_task"/>
+		<result property="successTask" column="success_task"/>
+		<result property="jobStartTime" column="job_start_time"/>
+		<result property="jobEndTime" column="job_end_time"/>
+		<result property="costTime" column="cost_time"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+
+	<sql id="allColumn">
+		id, job_sequence_no, job_name, status, note, total_task, success_task,
+		job_start_time, job_end_time, cost_time, create_time
+	</sql>
+	
+	<insert id="addOne" parameterType="jobLog">
+		INSERT INTO job_log(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				id,
+			</if>
+			<if test="jobSequenceNo !=null and jobSequenceNo != ''">
+				job_sequence_no,
+			</if>
+			<if test="jobName !=null and jobName != ''">
+				job_name,
+			</if>
+			<if test="status !=null">
+				status,
+			</if>
+			<if test="note !=null and note != ''">
+				note,
+			</if>
+			<if test="totalTask !=null">
+				total_task,
+			</if>
+			<if test="successTask !=null">
+				success_task,
+			</if>
+			<if test="jobStartTime !=null">
+				job_start_time,
+			</if>
+			<if test="jobEndTime !=null">
+				job_end_time,
+			</if>
+			<if test="costTime !=null">
+				cost_time,
+			</if>
+			create_time
+		</trim>
+		) VALUES (
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				#{id},
+			</if>
+			<if test="jobSequenceNo !=null and jobSequenceNo != ''">
+				#{jobSequenceNo},
+			</if>
+			<if test="jobName !=null and jobName != ''">
+				#{jobName},
+			</if>
+			<if test="status !=null">
+				#{status},
+			</if>
+			<if test="note !=null and note != ''">
+				#{note},
+			</if>
+			<if test="totalTask !=null">
+				#{totalTask},
+			</if>
+			<if test="successTask !=null">
+				#{successTask},
+			</if>
+			<if test="jobStartTime !=null">
+				#{jobStartTime},
+			</if>
+			<if test="jobEndTime !=null">
+				#{jobEndTime},
+			</if>
+			<if test="costTime !=null">
+				#{costTime},
+			</if>
+			NOW()
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 根据检索条件获取Joblog的数量 -->
+	<select id="selectJobLogCountByQuery" resultType="Integer" parameterType="jobLogQuery">
+		SELECT
+			COUNT(1)
+		FROM
+			job_log
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="status !=null">
+				AND <![CDATA[ status = #{status} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 根据检索条件获取Joblog的信息 -->
+	<select id="selectJobLogInfoByQuery" resultMap="jobLogResult" parameterType="jobLogQuery">
+		SELECT
+			<include refid="allColumn"/>
+		FROM
+			job_log
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="status !=null">
+				AND <![CDATA[ status = #{status} ]]>
+			</if>
+		</trim>
+		<!--<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY #{sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY #{sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>-->
+		ORDER BY id DESC
+		<if test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+
+	
+</mapper>

@@ -1,0 +1,182 @@
+.tit H2 {
+	PADDING-RIGHT: 0px; 
+	PADDING-LEFT: 0px; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 13px; 
+	PADDING-BOTTOM: 0px; 
+	MARGIN: 0px; 
+	PADDING-TOP: 0px;
+	LINE-HEIGHT: 30px; 
+}
+.bton {
+	BORDER-RIGHT: #ccc 1px solid; 
+	BORDER-TOP: #ccc 1px solid; 
+	BACKGROUND: #ddd; 
+	BORDER-LEFT: #ccc 1px solid; 
+	BORDER-BOTTOM: #ccc 1px solid
+}
+.cont {
+	PADDING-RIGHT: 0px; 
+	PADDING-LEFT: 5px; 
+	PADDING-BOTTOM: 10px; 
+	PADDING-TOP: 10px
+}
+#selectFieldItem  {
+	BORDER-RIGHT: #000 1px solid; 
+	BORDER-TOP: #000 1px solid; 
+	MARGIN-TOP: 10px; 
+	Z-INDEX: 2; 
+	BACKGROUND: #fff; 
+	OVERFLOW: hidden; 
+	BORDER-LEFT: #000 1px solid; 
+	WIDTH: 450px; 
+	BORDER-BOTTOM: #000 1px solid; 
+	POSITION: absolute; 
+	TOP: 20px;
+}
+#uploadFiles   {
+	BORDER-RIGHT: #000 1px solid; 
+	BORDER-TOP: #000 1px solid; 
+	MARGIN-TOP: 10px; 
+	Z-INDEX: 2; 
+	BACKGROUND: #fff; 
+	OVERFLOW: hidden; 
+	BORDER-LEFT: #000 1px solid; 
+	WIDTH: 450px; 
+	BORDER-BOTTOM: #000 1px solid; 
+	POSITION: absolute; 
+	TOP: 20px;
+}
+#selectProjectItem {
+	BORDER-RIGHT: #000 1px solid; 
+	BORDER-TOP: #000 1px solid; 
+	Z-INDEX: 2;
+	BACKGROUND: #fff; 
+	OVERFLOW: hidden; 
+	BORDER-LEFT: #000 1px solid; 
+	WIDTH: 910px;
+	BORDER-BOTTOM: #000 1px solid; 
+}
+#selectField input {
+	margin: 6px 4px 8px 15px
+}
+#selectProject input {
+	margin: 6px 4px 8px 15px
+}
+#makeSureProjectItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewFieldItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewProjectItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewAllCountryItem {
+	display: none;
+}
+#previewAllCountryItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewAllProvinceItem {
+	display: none;
+}
+#previewAllProvinceItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewAllCityItem {
+	 display: none;
+ }
+#previewAllCityItem input {
+	margin: 6px 4px 8px 15px;
+}
+#previewAllCountyLevelCityItem {
+	display: none;
+}
+#previewAllCountyLevelCityItem input {
+	margin: 6px 4px 8px 15px;
+}
+#fieldResult input {
+	margin: 6px 4px 8px 15px;
+}
+#previewProject {
+	BORDER-RIGHT: #ccc 1px solid; 
+	BORDER-TOP: #ccc 1px solid; 
+	MARGIN: 1px; 
+	BORDER-LEFT: #ccc 1px solid; 
+	BORDER-BOTTOM: #ccc 1px solid
+}
+#fieldResult, #distributorResult {
+	BORDER-RIGHT: #ccc 1px solid; 
+	BORDER-TOP: #ccc 1px solid; 
+	MARGIN-TOP: 10px; 
+	BORDER-LEFT: #ccc 1px solid; 
+	BORDER-BOTTOM: #ccc 1px solid
+}
+.tit {
+	PADDING-LEFT: 10px; 
+	MARGIN: 1px; 
+	LINE-HEIGHT: 30px; 
+	HEIGHT: 30px
+}
+.bgc_ccc {
+	BACKGROUND: #ccc
+}
+.bgc_eee {
+	BACKGROUND: #eee
+}
+.c_999 {
+	COLOR: #999
+}
+.pointer {
+	CURSOR: pointer;
+	padding:1px 2px;
+}
+.left {
+	FLOAT: left
+}
+.right {
+	FLOAT: right
+}
+.cls {
+	CLEAR: both; 
+	FONT-SIZE: 0px; 
+	OVERFLOW: hidden; 
+	HEIGHT: 0px
+}
+#bg {
+	DISPLAY: none; 
+	Z-INDEX: 1; 
+	BACKGROUND: #ccc; 
+	FILTER: alpha(opacity=70); 
+	LEFT: 0px; 
+	WIDTH: 100%; 
+	POSITION: absolute; 
+	TOP: 0px; 
+	opacity: 0.7
+}
+.hidden {
+	DISPLAY: none
+}
+.show {
+	DISPLAY: block
+}
+.move {
+	CURSOR: move
+}
+.distributorspan {
+	display:-moz-inline-box; display:inline-block; width:260px;
+}
+
+.activity_overdiv{
+  	overflow-y:auto;max-height:400px
+}
+#itemListDiv span {
+	display:inline-block; width:200px;
+}
+
+#itemListDiv span label {
+	margin-left: 15px;
+}
+
+

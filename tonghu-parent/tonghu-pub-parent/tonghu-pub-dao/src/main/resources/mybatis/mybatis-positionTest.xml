@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="positionTestDao">
+	<resultMap id="positionTestResult" type="positionTest">
+		<result property="id" column="id"/>
+		<result property="x" column="x"/>
+		<result property="y" column="y"/>
+		<result property="z" column="z"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+
+	<sql id="allColumn">
+		id, x, y, z, create_time, update_time
+	</sql>
+	
+	<insert id="addOne" parameterType="positionTest">
+		INSERT INTO position_test(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				id,
+			</if>
+			<if test="x != null">
+				x,
+			</if>
+			<if test="y != null">
+				y,
+			</if>
+			<if test="z != null">
+				z,
+			</if>
+			create_time
+		</trim>
+		) VALUES (
+		<trim suffix="" suffixOverrides=",">
+			<if test="id !=null">
+				#{id},
+			</if>
+			<if test="x != null">
+				#{x},
+			</if>
+			<if test="y != null">
+				#{y},
+			</if>
+			<if test="z != null">
+				#{z},
+			</if>
+			NOW()
+		</trim>
+		)
+	</insert>
+
+	<!-- 获取所有positionTest的信息 -->
+	<select id="selectAllPositionTestInfo" resultMap="positionTestResult">
+		SELECT
+			<include refid="allColumn"/>
+		FROM
+			position_test
+		ORDER BY id ASC
+	</select>
+
+</mapper>

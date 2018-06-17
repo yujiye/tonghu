@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+    					http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security
+                        http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<global-method-security pre-post-annotations="enabled" />
+
+	<!-- 不要过滤图片等静态资源，其中**代表可以跨越目录，*不可以跨越目录。 -->
+	<http pattern="/js/**" security="none"></http>
+	<http pattern="/css/**" security="none"></http>
+	<http pattern="/img/**" security="none"></http>
+	<http pattern="/log/**" security="none"></http>
+	<http pattern="/file/**" security="none"></http>
+	<http pattern="/login" security="none"></http>
+	<http pattern="/getProjectInfo.do" security="none"></http>
+	
+
+	<http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" access-denied-page="/access-denied.jsp">
+		<!--default-target-url			指定了从登录页面登录后进行跳转的页面
+            always-use-default-target	true表示登录成功后强制跳转
+            authentication-failure-url	表示验证失败后进入的页面
+            login-processing-url		设置验证登录验证地址，如果不设置，默认是j_spring_security_check
+            username-parameter,password-parameter     设置登录用户名和密码的请求name，默认：j_username,j_password -->
+
+		<!-- <form-login login-page="/login" default-target-url="/main" always-use-default-target="true"
+                authentication-failure-url="/login?error=1" login-processing-url="/logincheck"
+                authentication-success-handler-ref="successHandler"/> -->
+
+		<logout logout-url="/logout" logout-success-url="/login?msg=logout" invalidate-session="true" />
+
+		<!-- error-if-maximum-exceeded="true" 若max-sessions="1"，后登陆的账号会失败
+             session-fixation-protection="newSession"  newSession会在用户登录时生成新session，但不会复制任何原有属性
+             session-fixation-protection="none"  禁用session-fixation-protection 防止伪造sessionid攻击,用户登录成功后会销毁用户当前的session。
+             session-fixation-protection="migrateSession"  这会在登录时销毁用户的当前session，然后为用户创建一个新session，并将原有session中的所有属性都复制到新session中
+             max-sessions若等于-1，session跟踪会保持可用，但没有最大session个数的限制
+        -->
+		<session-management session-authentication-strategy-ref="sessionAuthenticationStrategy" />
+		<!--<session-management session-fixation-protection="none">
+            <concurrency-control max-sessions="1" expired-url="/login?error=expired" error-if-maximum-exceeded="true" />
+        </session-management>配置session并发控制，同一个账号，同时只能有一个人在线 -->
+		<custom-filter ref="concurrentSessionFilter" position="CONCURRENT_SESSION_FILTER" />
+		<custom-filter ref="loginFilter" position="FORM_LOGIN_FILTER"  />
+		<!-- 增加一个自定义的filter，放在FILTER_SECURITY_INTERCEPTOR之前，   实现用户、角色、权限、资源的数据库管理。  -->
+		<custom-filter ref="mySecurityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+	</http>
+
+	<!-- 自定义过滤器  开始 -->
+	<!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性，我们的所有控制将在这三个类中实现，解释详见具体配置 -->
+	<beans:bean id="mySecurityFilter" class="com.tonghu.app.stage.security.MySecurityFilter">
+		<!-- 用户拥有的权限 -->
+		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
+		<!-- 资源与权限的对应关系 -->
+		<beans:property name="securityMetadataSource" ref="mySecurityMetadataSource"></beans:property>
+		<!-- 用户是否拥有所请求地址的权限 -->
+		<beans:property name="accessDecisionManager" ref="myAccessDescisionManager"></beans:property>
+
+	</beans:bean>
+	<!-- 自定义过滤器  结束 -->
+
+	<!-- 用户拥有的权限：登录后取得用户所保有的权限信息 -->
+	<authentication-manager alias="myAuthenticationManager">
+		<authentication-provider user-service-ref="myUserDetailService">
+			<password-encoder hash="md5" />
+			<!-- 不设盐值了，盐值只能设置为username（我尝试设置为password，行不通），当username单独发生变化后，因为不知道密码是啥，所以不能更新密码，于是就不能登录了 -->
+			<!-- <salt-source user-property="username"/> 盐值  [添加这个属性后，加密密码明文为:"密码明文{盐值}"] <password-encoder> -->
+		</authentication-provider>
+	</authentication-manager>
+	<!-- 认证管理器 结束 -->
+
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<beans:bean id="myAccessDescisionManager" class="com.tonghu.app.stage.security.MyAccessDescisionManager"></beans:bean>
+
+	<!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+	<beans:bean id="mySecurityMetadataSource" class="com.tonghu.app.stage.security.MySecurityMetadataSource" />
+
+	<!-- 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+	<beans:bean id="myUserDetailService" class="com.tonghu.app.stage.security.MyUserDetailServiceImpl"></beans:bean>
+
+	<!--login filter begin-->
+	<beans:bean id="loginFilter"  class="com.tonghu.app.stage.security.MyUsernamePasswordAuthenticationFilter">
+		<beans:property name="sessionAuthenticationStrategy" ref="sessionAuthenticationStrategy"/><!--此配置可实现获取所有登录用户信息 -->
+		<beans:property name="filterProcessesUrl" value="/login_check"></beans:property>
+		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler"></beans:property>
+		<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"></beans:property>
+		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
+	</beans:bean>
+
+	<!-- 登录成功业务处理
+	<beans:bean id="loginLogAuthenticationSuccessHandler"
+			class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/warning.do"></beans:property>
+	</beans:bean> -->
+
+	<beans:bean id="loginLogAuthenticationSuccessHandler" class="com.tonghu.app.stage.security.MyAuthenticationSuccessHandler" />
+
+	<!-- 登录失败后业务处理 -->
+	<beans:bean id="simpleUrlAuthenticationFailureHandler"
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/login?msg=error"></beans:property>
+	</beans:bean>
+
+	<!-- 未登录的切入点 -->
+	<beans:bean id="authenticationProcessingFilterEntryPoint"
+				class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/login"></beans:property>
+		<beans:property name="forceHttps" value="false" />
+	</beans:bean>
+
+	<!--注入到UsernamePasswordAuthenticationFilter中，否则默认使用的是NullAuthenticatedSessionStrategy，则获取不到登录用户数
+		error-if-maximum-exceeded：若当前maximumSessions为1，当设置为true表示同一账户登录会抛出SessionAuthenticationException异常，
+		异常信息为：Maximum sessions of {0} for this principal exceeded；  当设置为false时，不会报错，则会让同一账户最先认证的session过期。
+   		具体参考：ConcurrentSessionControlStrategy:onAuthentication()
+	-->
+	<beans:bean id="sessionAuthenticationStrategy"
+				class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:property name="maximumSessions" value="1" />
+		<beans:property name="exceptionIfMaximumExceeded" value="false" />
+	</beans:bean>
+
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<beans:bean id="concurrentSessionFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:property name="sessionRegistry" ref="sessionRegistry" />
+		<beans:property name="expiredUrl" value="/login?msg=expired" />
+		<beans:property name="logoutHandlers">
+			<beans:list>
+				<beans:ref local="logoutHandler" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 注销监听器  -->
+	<beans:bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+		<beans:property name="InvalidateHttpSession" value="true" />
+	</beans:bean>
+
+</beans:beans>

@@ -92,7 +92,7 @@
 	
 <!-- ==================================================================================== -->
 	
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="infolog" />  
 		<appender-ref ref="errorlog" /> 
 		<appender-ref ref="stdout" />

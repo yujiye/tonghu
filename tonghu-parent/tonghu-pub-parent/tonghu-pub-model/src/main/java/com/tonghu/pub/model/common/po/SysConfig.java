@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.common.po;
 
 import com.tonghu.pub.model.po.BusinessBasePo;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 
 /**

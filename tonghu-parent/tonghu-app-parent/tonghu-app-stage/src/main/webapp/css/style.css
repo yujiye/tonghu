@@ -77,6 +77,9 @@ h1,h2,h3,h4,h5,h6 {font-family:"microsoft yahei";}
 .width800 {
     width: 800px;
 }
+.width840 {
+    width: 800px;
+}
 .rightValue {
     padding-left: 3px;
     padding-right: 3px;
@@ -604,9 +607,9 @@ p#vtip #vtipArrow { position: absolute; top: -10px; left: 5px }
 .icos_sysManage { background-image: url(../img/sysManage.png); }
 .ico_16_sysManage { background-image: url(../img/sysManage.png); }
 
-.i_anaDataManage { background: url(../img/menu_bg.png) no-repeat -0px -222px; }
-.icos_anaDataManage { background-image: url(../img/sysManage.png); }
-.ico_16_anaDataManage { background-image: url(../img/sysManage.png); }
+.i_dataManage { background: url(../img/menu_bg.png) no-repeat -0px -222px; }
+.icos_dataManage { background-image: url(../img/sysManage.png); }
+.ico_16_dataManage { background-image: url(../img/sysManage.png); }
 
 .i_projectCreate { background-image: url(../img/projectCreate.png); }
 .icos_projectCreate { background-image: url(../img/projectCreate.png); }
@@ -628,9 +631,9 @@ p#vtip #vtipArrow { position: absolute; top: -10px; left: 5px }
 .icos_frontUser { background-image: url(../img/frontUser.png); }
 .ico_16_frontUser { background-image: url(../img/frontUser.png); }
 
-.i_groupDataList { background-image: url(../img/groupData.png); }
-.icos_groupDataList { background-image: url(../img/groupData.png); }
-.ico_16_groupDataList { background-image: url(../img/groupData.png); }
+.i_mockDataManage { background-image: url(../img/mockDataManage.png); }
+.icos_mockDataManage { background-image: url(../img/mockDataManage.png); }
+.ico_16_mockDataManage { background-image: url(../img/mockDataManage.png); }
 
 .i_groupDataShow { background-image: url(../img/projectShow.png); }
 .icos_groupDataShow { background-image: url(../img/projectShow.png); }
@@ -2618,6 +2621,7 @@ width:80px;
 .width700 {width: 700px;}
 .width600 {width: 600px;}
 .width500 {width: 500px;}
+.width550 {width: 550px;}
 .width400 {width: 400px;}
 .width420 {width: 420px;}
 .width350 {width: 350px;}
@@ -2647,6 +2651,7 @@ button.red {color: #c30; font-weight: bold; }
 input.wrong { border: solid 1px #c30!important; }
 .paddingTopBot10 { padding: 10px 0; }
 .marginBot15 { margin: 0 0 15px 0; }
+.marginBot5 { margin: 0 0 5px 0; }
 .marginBot0 { margin-bottom: 0; }
 .marginLeft15 { margin-left: 15px; }
 .marginLeftRight10 { margin: 0 10px; }

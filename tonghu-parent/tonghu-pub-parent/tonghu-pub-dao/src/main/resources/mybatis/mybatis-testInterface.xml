@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="testInterfaceDao">
+	<resultMap id="testInterfaceResult" type="testInterface">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+	</resultMap>
+
+	<sql id="allColumn">
+		id, name
+	</sql>
+
+	<!-- 获取最新的test_interface的信息 -->
+	<select id="selectAllRecordInfo" resultMap="testInterfaceResult">
+		SELECT
+			<include refid="allColumn"/>
+		FROM
+			test_interface
+		ORDER BY id ASC
+	</select>
+
+</mapper>

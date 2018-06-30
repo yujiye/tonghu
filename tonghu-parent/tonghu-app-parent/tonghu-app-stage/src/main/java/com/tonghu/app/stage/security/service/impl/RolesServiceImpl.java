@@ -225,7 +225,7 @@ public class RolesServiceImpl implements RolesService {
 	}
 	
 	@Override
-	@Transactional(value = "xinyuanTxManager", isolation = Isolation.REPEATABLE_READ,
+	@Transactional(value = "tonghuTxManager", isolation = Isolation.REPEATABLE_READ,
 			propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public boolean assignRoleAuth(Long roleId, HttpServletRequest request, String resourceIds, PubModelMap modelMap){
 		LOGGER.debug("Service层：根据角色id更新角色权限信息");

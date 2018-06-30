@@ -632,7 +632,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	@Transactional(value = "xinyuanTxManager", isolation = Isolation.REPEATABLE_READ,
+	@Transactional(value = "tonghuTxManager", isolation = Isolation.REPEATABLE_READ,
 			propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public boolean updateUserRole(final Long userId, Long roleId, HttpServletRequest request, PubModelMap modelMap) {
 		LOGGER.debug("更新用户的角色信息: userId={}, roleId={}", userId, roleId);

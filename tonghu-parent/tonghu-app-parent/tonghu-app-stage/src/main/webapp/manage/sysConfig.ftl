@@ -41,7 +41,7 @@
                                     <td class="botValue">${num}</td>
                                     <td class="botValue">${sysConfigInfo.configName}</td>
                                     <td class="botValue">
-                                        <#if sysConfigInfo.valueType == "integer">
+                                        <#if sysConfigInfo.valueType == "integer" || sysConfigInfo.valueType == "string">
                                             ${sysConfigInfo.configValue}
                                         <#elseif sysConfigInfo.valueType == "file">
                                             <A href="#" onclick="return downLoadFile('${sysConfigInfo.configValue}')">点击下载配置文件</A>

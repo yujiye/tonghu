@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.security.po;
 
 import com.tonghu.pub.model.po.BasePo;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description: 封装查询结果的数量信息
@@ -8,6 +10,8 @@ import com.tonghu.pub.model.po.BasePo;
  * @Version V1.0
  * @date 2017-09-24 下午07:37:50
  */
+@Getter
+@Setter
 public class TotalInfo extends BasePo {
 
 	private Integer totalCount; // 记录总的数量
@@ -30,52 +34,5 @@ public class TotalInfo extends BasePo {
 		
 	}
 
-	public Integer getTotalCount() {
-		return totalCount;
-	}
-
-	public void setTotalCount(Integer totalCount) {
-		this.totalCount = totalCount;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public Integer getPageTotal() {
-		return pageTotal;
-	}
-
-	public void setPageTotal(Integer pageTotal) {
-		this.pageTotal = pageTotal;
-	}
-
-	public Integer getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(Integer currentPage) {
-		this.currentPage = currentPage;
-	}
-
-	public Integer getStartNum() {
-		return startNum;
-	}
-
-	public void setStartNum(Integer startNum) {
-		this.startNum = startNum;
-	}
-
-	public Integer getEndNum() {
-		return endNum;
-	}
-
-	public void setEndNum(Integer endNum) {
-		this.endNum = endNum;
-	}
 
 }

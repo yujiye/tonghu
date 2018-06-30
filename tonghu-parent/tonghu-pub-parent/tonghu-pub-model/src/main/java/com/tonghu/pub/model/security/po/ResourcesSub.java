@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.security.po;
 
 import com.tonghu.pub.model.po.BasePo;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description: 系统子资源信息 实体类
@@ -8,6 +10,8 @@ import com.tonghu.pub.model.po.BasePo;
  * @Version V1.0
  * @date 2017-09-24 下午07:34:52
  */
+@Getter
+@Setter
 public class ResourcesSub extends BasePo {
 
 	private Long id; // 资源id
@@ -20,76 +24,5 @@ public class ResourcesSub extends BasePo {
 	private Long updateUserId; // 修改者的用户ID
 	private String note;// 备注
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getSubResourceName() {
-		return subResourceName;
-	}
-
-	public void setSubResourceName(String subResourceName) {
-		this.subResourceName = subResourceName;
-	}
-
-	public String getSubResourceUrl() {
-		return subResourceUrl;
-	}
-
-	public void setSubResourceUrl(String subResourceUrl) {
-		this.subResourceUrl = subResourceUrl;
-	}
-
-	public Long getResourceId() {
-		return resourceId;
-	}
-
-	public void setResourceId(Long resourceId) {
-		this.resourceId = resourceId;
-	}
-
-	public String getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-
-	public Long getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public String getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	public Long getUpdateUserId() {
-		return updateUserId;
-	}
-
-	public void setUpdateUserId(Long updateUserId) {
-		this.updateUserId = updateUserId;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
 
 }

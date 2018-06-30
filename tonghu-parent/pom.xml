@@ -19,6 +19,7 @@
         <project.version>1.0-SNAPSHOT</project.version>
         <spring.version>4.3.1.RELEASE</spring.version>
         <spring.security.version>3.1.2.RELEASE</spring.security.version>
+        <spring-aspects.version>4.3.1.RELEASE</spring-aspects.version>
         <mybatis.version>3.1.1</mybatis.version>
         <mybatis-spring.version>1.1.1</mybatis-spring.version>
         <logback.version>1.0.7</logback.version>
@@ -26,7 +27,7 @@
         <codehaus.jackson>1.9.13</codehaus.jackson>
         <fasterxml.jackson>2.8.4</fasterxml.jackson>
         <junit.version>4.10</junit.version>
-        <http.version>4.2.1</http.version>
+        <http.version>4.3.1</http.version>
         <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
         <dom4j.version>1.6.1</dom4j.version>
         <javassist.version>3.15.0-GA</javassist.version>
@@ -91,6 +92,11 @@
         <guava.version>17.0</guava.version>
         <pinyin4j.version>1.0.0</pinyin4j.version>
         <gson.version>2.3</gson.version>
+        <apache.commons-collections.version>4.0</apache.commons-collections.version>
+        <apache.commons-lang3.version>3.1</apache.commons-lang3.version>
+        <apache.commons-digester3.version>3.2</apache.commons-digester3.version>
+        <apache.commons-codec.version>1.7</apache.commons-codec.version>
+        <lombok.version>1.14.8</lombok.version>
         <package.environment></package.environment>
     </properties>
 
@@ -271,6 +277,11 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
                 <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring-aspects.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -540,9 +551,29 @@
                 <version>${pinyin4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${apache.commons-collections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-digester3</artifactId>
+                <version>${apache.commons-digester3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${apache.commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -761,16 +792,57 @@
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.obiteaaron</groupId>
             <artifactId>pinyin4j-multi</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-digester3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

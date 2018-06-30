@@ -13,6 +13,7 @@
         <module>tonghu-pub-model</module>
         <module>tonghu-pub-common</module>
         <module>tonghu-pub-dao</module>
+        <module>tonghu-pub-proxy</module>
     </modules>
     <artifactId>tonghu-pub-parent</artifactId>
     <version>1.0-SNAPSHOT</version>

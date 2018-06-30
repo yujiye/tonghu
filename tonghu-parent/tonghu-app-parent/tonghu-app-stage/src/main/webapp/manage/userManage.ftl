@@ -77,12 +77,7 @@
                                     <td class="botValue">
                                         <a class="btn" id="showUser_${userInfo.id}"><i class="icon-eye-open"></i>查看</a>&nbsp;
 										<#if userInfo.editable == 1>
-                                            <#if userInfo.userRoleList?? && userInfo.userRoleList[0].roleId == 2>
-                                                <a class="btn" id="updateEditorUser_${userInfo.id}" userName="${userInfo.userName}"><i class="icon-edit"></i>编辑</a>&nbsp;
-                                            <#else>
-                                                <a class="btn" id="updateUser_${userInfo.id}" userName="${userInfo.userName}"><i class="icon-edit"></i>编辑</a>&nbsp;
-                                            </#if>
-
+                                            <a class="btn" id="updateUser_${userInfo.id}" userName="${userInfo.userName}"><i class="icon-edit"></i>编辑</a>&nbsp;
                                             <a class="btn" id="removeUser_${userInfo.id}"><i class="icon-trash"></i>删除</a>
 										</#if>
                                     </td>

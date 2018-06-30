@@ -1,5 +1,8 @@
 package com.tonghu.pub.model.po;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @desc 查询时所用分页信息基类
  * @author liangyongjian
@@ -13,8 +16,12 @@ public class BasePaginationQuery extends BasePo {
 
     private Integer startNum; // 查询的起始记录序号
 
+    @Getter
+    @Setter
     private String sortBy; // 排序SQL
 
+    @Getter
+    @Setter
     private String sortType = "2"; // 1升序 2降序
 
     public Integer getPage() {
@@ -54,19 +61,4 @@ public class BasePaginationQuery extends BasePo {
         this.startNum = startNum;
     }
 
-    public String getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(String sortBy) {
-        this.sortBy = sortBy;
-    }
-
-    public String getSortType() {
-        return sortType;
-    }
-
-    public void setSortType(String sortType) {
-        this.sortType = sortType;
-    }
 }

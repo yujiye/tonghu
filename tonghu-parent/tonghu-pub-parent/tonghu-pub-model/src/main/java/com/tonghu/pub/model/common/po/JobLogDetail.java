@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.common.po;
 
 import com.tonghu.pub.model.po.BusinessBasePo;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -8,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
  * @author liangyongjian
  * @date 2017年9月30日 下午3:39:20
  */
+@Getter
+@Setter
 public class JobLogDetail extends BusinessBasePo {
 
 	private String jobSequenceNo; //作业序列号
@@ -26,46 +30,6 @@ public class JobLogDetail extends BusinessBasePo {
 		if (StringUtils.isNotEmpty(note) && note.length() > 1000) {
 			note = note.substring(0, 1000);
 		}
-		this.note = note;
-	}
-
-	public String getJobSequenceNo() {
-		return jobSequenceNo;
-	}
-
-	public void setJobSequenceNo(String jobSequenceNo) {
-		this.jobSequenceNo = jobSequenceNo;
-	}
-
-	public String getJobName() {
-		return jobName;
-	}
-
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
-
-	public String getTaskContent() {
-		return taskContent;
-	}
-
-	public void setTaskContent(String taskContent) {
-		this.taskContent = taskContent;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
 		this.note = note;
 	}
 

@@ -56,7 +56,10 @@
 
 		<typeAlias alias="positionTest" type="com.tonghu.pub.model.business.po.PositionTest" />
 
-
+		<typeAlias alias="iotAccessToken" type="com.tonghu.pub.model.business.po.IotAccessToken" />
+		<typeAlias alias="testInterface" type="com.tonghu.pub.model.business.po.TestInterface" />
+		<!-- 模拟数据对象 -->
+		<typeAlias alias="mockData" type="com.tonghu.pub.model.business.po.MockData" />
 
 		<!-- 检索系统用户记录查询对象 -->
 		<typeAlias alias="usersQuery" type="com.tonghu.pub.model.security.po.query.UsersQuery" />
@@ -72,6 +75,9 @@
 		<typeAlias alias="jobLogQuery" type="com.tonghu.pub.model.common.po.query.JobLogQuery" />
 		<!-- 附件查询对象 -->
 		<typeAlias alias="attachmentQuery" type="com.tonghu.pub.model.common.po.query.AttachmentQuery" />
+		<!-- 模拟数据查询对象 -->
+		<typeAlias alias="mockDataQuery" type="com.tonghu.pub.model.business.po.query.MockDataQuery" />
+
 		<!-- 系统服务访问监控日志查询对象
 		<typeAlias alias="monitorReceiverLogQuery" type="com.experts.dblog.po.query.MonitorReceiverLogQuery" />-->
 		<!-- 系统SQL执行监控日志查询对象
@@ -113,7 +119,13 @@
 		<mapper resource="mybatis/mybatis-attachment.xml" />
 		<!-- 系统配置项信息 -->
 		<mapper resource="mybatis/mybatis-sysConfig.xml" />
-
+		<!-- 点位测试表信息 -->
 		<mapper resource="mybatis/mybatis-positionTest.xml" />
+		<!-- IOT系统访问Token信息 -->
+		<mapper resource="mybatis/mybatis-iotAccessToken.xml" />
+		<!-- 接口测试表信息 -->
+		<mapper resource="mybatis/mybatis-testInterface.xml" />
+		<!-- 模拟数据表信息 -->
+		<mapper resource="mybatis/mybatis-mockData.xml" />
 	</mappers>
 </configuration> 

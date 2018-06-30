@@ -15,7 +15,7 @@ public class GsonWrapper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GsonWrapper.class);
 	private static final Logger ERROR_LOGGER = LoggerFactory.getLogger("errorLog");
 
-	public <T> T fromJson(Gson gson, String json, Class<T> classOfT) {
+	public static <T> T fromJson(Gson gson, String json, Class<T> classOfT) {
 		T result = null;
 		Reader reader = null;
 		JsonReader jsonReader = null;

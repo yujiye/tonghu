@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.common.po;
 
 import com.tonghu.pub.model.po.BusinessBasePo;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -9,6 +11,8 @@ import java.sql.Timestamp;
  * @author liangyongjian
  * @date 2017年9月29日 下午9:57:44
  */
+@Getter
+@Setter
 public class JobLog extends BusinessBasePo {
 
 	private String jobSequenceNo; //作业序列号
@@ -36,78 +40,6 @@ public class JobLog extends BusinessBasePo {
 		if (jobStartTime != null && jobEndTime != null) {
 			this.costTime = jobEndTime.getTime() - jobStartTime.getTime();
 		}
-	}
-	
-	public String getJobSequenceNo() {
-		return jobSequenceNo;
-	}
-
-	public void setJobSequenceNo(String jobSequenceNo) {
-		this.jobSequenceNo = jobSequenceNo;
-	}
-
-	public String getJobName() {
-		return jobName;
-	}
-
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public Integer getTotalTask() {
-		return totalTask;
-	}
-
-	public void setTotalTask(Integer totalTask) {
-		this.totalTask = totalTask;
-	}
-
-	public Integer getSuccessTask() {
-		return successTask;
-	}
-
-	public void setSuccessTask(Integer successTask) {
-		this.successTask = successTask;
-	}
-	
-	public Timestamp getJobStartTime() {
-		return jobStartTime;
-	}
-
-	public void setJobStartTime(Timestamp jobStartTime) {
-		this.jobStartTime = jobStartTime;
-	}
-
-	public Timestamp getJobEndTime() {
-		return jobEndTime;
-	}
-
-	public void setJobEndTime(Timestamp jobEndTime) {
-		this.jobEndTime = jobEndTime;
-	}
-
-	public Long getCostTime() {
-		return costTime;
-	}
-
-	public void setCostTime(Long costTime) {
-		this.costTime = costTime;
 	}
 
 }

@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="mockDataDao">
+	<resultMap id="mockDataInfoResult" type="mockData">
+		<id property="id" column="id"/>
+		<result property="dataName" column="data_name"/>
+		<result property="dataType" column="data_type"/>
+		<result property="dataValue" column="data_value"/>
+		<result property="note" column="note"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="updateUserId" column="update_userid"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, data_name, data_type, data_value, note, 
+		create_userid, update_userid, create_time, update_time
+    </sql>
+  
+  	<!-- 新增模拟数据信息 -->
+	<insert id="insertNewMockData" parameterType="mockData" useGeneratedKeys="true" keyProperty="id">
+		insert into mock_data (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="dataName != null and dataName != ''">
+				data_name,
+			</if>
+			<if test="dataType != null and dataType != ''">
+				data_type,
+			</if>
+			<if test="dataValue != null and dataValue != ''">
+				data_value,
+			</if>
+			<if test="note != null and note != ''">
+				note,
+			</if>
+			<if test="createUserId != null">
+				create_userid,
+			</if>
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+			<if test="dataName != null and dataName != ''">
+				#{dataName},
+			</if>
+			<if test="dataType != null and dataType != ''">
+				#{dataType},
+			</if>
+			<if test="dataValue != null and dataValue != ''">
+				#{dataValue},
+			</if>
+			<if test="note != null and note != ''">
+				#{note},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId},
+			</if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 获取所有的模拟数据信息 -->
+	<select id="selectAllMockDataInfo" resultMap="mockDataInfoResult" resultType="mockData">
+		SELECT
+		<include refid="allColumn"/>
+		FROM mock_data
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 根据模拟数据id获取模拟数据信息 -->
+	<select id="selectMockDataById" resultMap="mockDataInfoResult" resultType="mockData" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			mock_data
+		WHERE id = #{id}
+	</select>
+
+
+	<select id="selectMockDataByName" resultMap="mockDataInfoResult" resultType="mockData" parameterType="string">
+		SELECT <include refid="allColumn"/>
+		FROM mock_data
+		WHERE data_name = #{dataName}
+	</select>
+	
+	<!-- 根据检索条件获取模拟数据的数量 -->
+	<select id="selectMockDataCountByQuery" resultType="Integer" parameterType="mockDataQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			mock_data 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="dataName != null and dataName != ''">
+				AND <![CDATA[ data_name like CONCAT('%','${dataName}','%' ) ]]>
+			</if>
+			<if test="dataType != null and dataType != ''">
+				AND <![CDATA[ data_type = #{dataType} ]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据检索条件获取模拟数据的信息 -->
+	<select id="selectMockDataInfoByQuery" resultType="mockData" resultMap="mockDataInfoResult" parameterType="mockDataQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			mock_data
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="dataName != null and dataName != ''">
+				AND <![CDATA[ data_name like CONCAT('%','${dataName}','%' ) ]]>
+			</if>
+			<if test="dataType != null and dataType != ''">
+				AND <![CDATA[ data_type = #{dataType} ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		<if test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+	
+    <!-- 根据模拟数据ID删除模拟数据信息 物理删除 -->
+    <update id="updateMockDataById" parameterType="long">
+    	UPDATE mock_data SET
+		<trim suffix="" suffixOverrides=",">
+			data_name = #{dataName},
+			data_type = #{dataType},
+			data_value = #{dataValue},
+			note = #{note},
+			<if test="updateUserId != null">
+				update_userid = #{updateUserId},
+			</if>
+			update_time = now()
+		</trim>
+    	WHERE id = #{id}
+    </update>
+
+	<!-- 根据模拟数据ID删除模拟数据信息 物理删除 -->
+	<delete id="deleteMockDataById" parameterType="long">
+		DELETE FROM mock_data WHERE id = #{id}
+	</delete>
+	
+</mapper>

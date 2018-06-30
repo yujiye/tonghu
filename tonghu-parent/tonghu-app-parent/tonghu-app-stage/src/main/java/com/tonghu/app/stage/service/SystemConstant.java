@@ -126,6 +126,19 @@ public class SystemConstant {
 	}
 
 	/**
+	 * 获取潼湖API应用的地址前缀
+	 * @return
+	 */
+	public String getTongHuApiUrlPrefix() {
+		if(!CollectionUtils.isEmpty(getSysConfigMapWithKeyItem())) {
+			if (getSysConfigMapWithKeyItem().containsKey("tonghu_api_url_prefix")) {
+				return getSysConfigMapWithKeyItem().get("tonghu_api_url_prefix").getConfigValue();
+			}
+		}
+		return "";
+	}
+
+	/**
 	 * 获取角色信息集合
 	 * @return List<Roles>
 	 * @throws

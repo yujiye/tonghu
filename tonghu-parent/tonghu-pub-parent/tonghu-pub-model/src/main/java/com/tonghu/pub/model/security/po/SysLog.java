@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.security.po;
 
 import com.tonghu.pub.model.po.BusinessBasePo;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Description: 系统日志 实体类
@@ -8,6 +10,8 @@ import com.tonghu.pub.model.po.BusinessBasePo;
  * @Version V1.0
  * @date 2017-09-24 下午09:03:20
  */
+@Getter
+@Setter
 public class SysLog extends BusinessBasePo {
 
 	private String innerSerialId;// 内部流水号
@@ -38,83 +42,4 @@ public class SysLog extends BusinessBasePo {
 		this.cause = cause;
 	}
 
-	public String getInnerSerialId() {
-		return innerSerialId;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public String getUserIp() {
-		return userIp;
-	}
-
-	public Integer getOperatorType() {
-		return operatorType;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public Integer getIsSuccess() {
-		return isSuccess;
-	}
-
-	public String getCause() {
-		return cause;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public String getOperatorTypeName() {
-		return operatorTypeName;
-	}
-
-	public String getSuccess() {
-		return success;
-	}
-
-	public void setInnerSerialId(String innerSerialId) {
-		this.innerSerialId = innerSerialId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public void setUserIp(String userIp) {
-		this.userIp = userIp;
-	}
-
-	public void setOperatorType(Integer operatorType) {
-		this.operatorType = operatorType;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public void setIsSuccess(Integer isSuccess) {
-		this.isSuccess = isSuccess;
-	}
-
-	public void setCause(String cause) {
-		this.cause = cause;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public void setOperatorTypeName(String operatorTypeName) {
-		this.operatorTypeName = operatorTypeName;
-	}
-
-	public void setSuccess(String success) {
-		this.success = success;
-	}
 }

@@ -16,6 +16,7 @@
 	<bean class="com.tonghu.pub.common.spring.SpringContextUtils"/>
 
 	<import resource="classpath:configs/spring-tonghu-jdbc.xml" />
+	<import resource="classpath:configs/spring-tonghu-proxy.xml" />
 
 	<!-- 配置线程池 -->
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

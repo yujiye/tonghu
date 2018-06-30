@@ -20,7 +20,6 @@ import java.util.List;
 @Repository(value="positionTestDao")
 public class PositionTestDaoImpl extends BaseDao implements PositionTestDao {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PositionTestDaoImpl.class);
 
     @Override

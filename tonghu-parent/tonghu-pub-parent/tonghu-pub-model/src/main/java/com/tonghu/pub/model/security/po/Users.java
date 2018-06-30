@@ -1,6 +1,8 @@
 package com.tonghu.pub.model.security.po;
 
 import com.tonghu.pub.model.po.BusinessBasePo;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -10,6 +12,8 @@ import java.util.List;
  * @Version V1.0
  * @date 2017-09-24 下午07:34:52
  */
+@Getter
+@Setter
 public class Users extends BusinessBasePo {
 	
 	public Users() {}
@@ -38,150 +42,6 @@ public class Users extends BusinessBasePo {
 	private String orgName;// 用户所属机构名称
 	private String createUserName; // 创建者的用户名称
 	private String updateUserName; // 修改者的用户名称
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	public String getTrueName() {
-		return trueName;
-	}
-
-	public void setTrueName(String trueName) {
-		this.trueName = trueName;
-	}
-
-	public String getUserMobile() {
-		return userMobile;
-	}
-
-	public void setUserMobile(String userMobile) {
-		this.userMobile = userMobile;
-	}
-
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
-
-	public Integer getIsLock() {
-		return isLock;
-	}
-
-	public void setIsLock(Integer isLock) {
-		this.isLock = isLock;
-	}
-
-	public Integer getEditable() {
-		return editable;
-	}
-
-	public void setEditable(Integer editable) {
-		this.editable = editable;
-	}
-
-	public Long getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public Long getUpdateUserId() {
-		return updateUserId;
-	}
-
-	public void setUpdateUserId(Long updateUserId) {
-		this.updateUserId = updateUserId;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
-	public List<UserRole> getUserRoleList() {
-		return userRoleList;
-	}
-
-	public void setUserRoleList(List<UserRole> userRoleList) {
-		this.userRoleList = userRoleList;
-	}
-
-	public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
-
-	public String getLockStr() {
-		return lockStr;
-	}
-
-	public void setLockStr(String lockStr) {
-		this.lockStr = lockStr;
-	}
-
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-
-	public String getCreateUserName() {
-		return createUserName;
-	}
-
-	public void setCreateUserName(String createUserName) {
-		this.createUserName = createUserName;
-	}
-
-	public String getUpdateUserName() {
-		return updateUserName;
-	}
-
-	public void setUpdateUserName(String updateUserName) {
-		this.updateUserName = updateUserName;
-	}
 
 	@Override
 	public String toString() {

@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @Controller
 public class AttachmentController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AttachmentController.class);
 
 	@Resource
@@ -44,13 +44,13 @@ public class AttachmentController {
 
 	@Resource
 	private InputConfig inputConfig;
-	
+
 	@Resource
 	private SystemConstant systemConstant;
 
 	@Resource
 	private AttachmentService attachmentService;
-	
+
 	/**
 	 * 上传附件
 	 * @param multipartRequest
@@ -60,8 +60,8 @@ public class AttachmentController {
 	 * @throws IOException
 	 */
 	@RequestMapping(method = {RequestMethod.POST}, value = "/fileUpload.do")
-    public void fileUpload(MultipartHttpServletRequest multipartRequest,
-		    HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	public void fileUpload(MultipartHttpServletRequest multipartRequest,
+						   HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		PubModelMap modelMap = new PubModelMap(request);
 		Users user = (Users)request.getSession().getAttribute("CURRENT_USER_INFO");
 		if (multipartRequest == null || multipartRequest.getFileNames() == null || user == null) {
@@ -72,75 +72,93 @@ public class AttachmentController {
 			try {
 				LOGGER.info("开始上传附件");
 				for (Iterator<String> it = multipartRequest.getFileNames(); it.hasNext();) {
-			        String key = (String) it.next();
-			        MultipartFile file = multipartRequest.getFile(key);
-			        //校验附件名称
-			        if (file.getOriginalFilename().length() > 0) {
-			        	String originalFilename = file.getOriginalFilename();
-			        	String fileExtName = FileUtils.getFileExtName(originalFilename, webConfig.getFileSuffix());
-			        	//校验附件后缀名
-			        	if (fileExtName != null && !fileExtName.equals("")) {
-			        		//校验附件大小
-			        		if (this.checkImportFileSize(file)) {
-					        	
-					        	String path = webConfig.getAppBasePath() + webConfig.getUploadPath();
-						        FolderUtils.createFolder(path);
-						        LOGGER.info("附件上传路径：{}", path);
-						        
-						        LOGGER.info("原文件名称：{}", originalFilename);
-						        
-						        String fileName = CreateGUID.getGUID() + "." + fileExtName;
-						        LOGGER.info("新文件名称：{}", fileName);
-						        File targetFile = new File(path, fileName);  
-						        if(!targetFile.exists()){  
-						            targetFile.mkdirs();  
-						        }
-						        //保存  
-						        file.transferTo(targetFile);
-						        //附件信息保存到数据库
-						        Attachment attachment = new Attachment();
-						        attachment.setFileName(MyStringUtils.cutStr(fileName,
+					String key = (String) it.next();
+					MultipartFile file = multipartRequest.getFile(key);
+					//校验附件名称
+					if (file.getOriginalFilename().length() > 0) {
+						String originalFilename = file.getOriginalFilename();
+						String fileExtName = FileUtils.getFileExtName(originalFilename, webConfig.getFileSuffix());
+						//校验附件后缀名
+						if (fileExtName != null && !fileExtName.equals("")) {
+							//校验附件大小
+							if (this.checkImportFileSize(file)) {
+
+								String todayYMDStr = DateTimeUtils.getDateTime(DateTimeUtils.YMD);
+
+								String path = webConfig.getAppBasePath() + webConfig.getUploadPath() + todayYMDStr;
+								FolderUtils.createFolder(path);
+								LOGGER.info("附件上传路径：{}", path);
+
+								LOGGER.info("原文件名称：{}", originalFilename);
+
+								String fileName = CreateGUID.getGUID() + "." + fileExtName;
+								LOGGER.info("新文件名称：{}", fileName);
+								File targetFile = new File(path, fileName);
+								if(!targetFile.exists()){
+									targetFile.mkdirs();
+								}
+								//保存
+								file.transferTo(targetFile);
+								//附件信息保存到数据库
+								Attachment attachment = new Attachment();
+								attachment.setFileName(MyStringUtils.cutStr(fileName,
 										inputConfig.getFileNameLength()));
 
-						        attachment.setFilePath(MyStringUtils.cutStr(
-						        		webConfig.getUploadPath(), inputConfig.getFilePathLength()));
+//						        attachment.setFilePath(MyStringUtils.cutStr(
+//						        		webConfig.getUploadPath(), inputConfig.getFilePathLength()));
 
-						        attachment.setFileType(MyStringUtils.cutStr(file.getContentType(),
+								attachment.setFilePath(MyStringUtils.cutStr(
+										webConfig.getUploadPath() + todayYMDStr + "/",
+										inputConfig.getFilePathLength()));
+
+								attachment.setFileType(MyStringUtils.cutStr(file.getContentType(),
 										inputConfig.getFileTypeLength()));
 
-						        attachment.setFileSize(file.getSize());
+								attachment.setFileSize(file.getSize());
 
-						        attachment.setOriginalFileName(MyStringUtils.cutStr(originalFilename,
+								attachment.setOriginalFileName(MyStringUtils.cutStr(originalFilename,
 										inputConfig.getOriginalFileNameLength()));
 
-						        attachment.setCreateUserId(user.getCreateUserId());
+								attachment.setCreateUserId(user.getCreateUserId());
 
-						        attachmentService.addNewAttachment(attachment);
-						        modelMap.put("status", "success");
-						        modelMap.put("data", attachment.getId());
-						        modelMap.put("fileName", originalFilename);
-						        modelMap.put("fileExtName", fileExtName);
+								attachmentService.addNewAttachment(attachment);
+								modelMap.put("status", "success");
+								modelMap.put("data", attachment.getId());
+								modelMap.put("fileName", originalFilename);
+								modelMap.put("fileExtName", fileExtName);
 								modelMap.put("fileUrl", fileExtName);
-					        } else {
-					        	LOGGER.error("所上传的附件大小超过限制：{}M，附件大小为：{}M",
+
+
+								if (!StringUtils.isEmpty(webConfig.getFileServerName())) {
+									modelMap.put("fileRelativeUrl", "/" + webConfig.getFileServerName() +
+											webConfig.getUploadPath() + todayYMDStr + "/" + fileName);
+								} else {
+									modelMap.put("fileRelativeUrl",
+											webConfig.getUploadPath().substring(
+													1, webConfig.getUploadPath().length())
+													+ todayYMDStr + "/" + fileName);
+								}
+
+							} else {
+								LOGGER.error("所上传的附件大小超过限制：{}M，附件大小为：{}M",
 										systemConstant.getMaxImportFileSize(),
-					        			file.getSize() / 1024 / 1024);
+										file.getSize() / 1024 / 1024);
 								modelMap.put("status", "error");
 								modelMap.put("data", "所上传的附件大小超过限制：" +
 										systemConstant.getMaxImportFileSize() + "M");
-					        } 
-			        	} else {
-			        		LOGGER.error("附件的后缀名不在允许范围之内：{}", originalFilename);
+							}
+						} else {
+							LOGGER.error("附件的后缀名不在允许范围之内：{}", originalFilename);
 							modelMap.put("status", "error");
 							modelMap.put("data", "附件的后缀名不在允许范围之内！");
-			        	}
-			        	
-			        } else {
+						}
+
+					} else {
 						LOGGER.error("所上传的附件原始名称为空");
 						modelMap.put("status", "error");
 						modelMap.put("data", "所上传的附件原始名称为空，请重新上传");
-			        }
-			    }
+					}
+				}
 			} catch(Exception e) {
 				LOGGER.error("上传附件的操作出现异常：{}", e);
 				modelMap.put("status", "exception");
@@ -150,8 +168,125 @@ public class AttachmentController {
 		response.setCharacterEncoding(Constant.DEFAULT_ENCODE.STRING_UTF8);
 		response.setContentType(Constant.DEFAULT_CONTENT_TYPE.CONTENT_TYPE_UTF8);
 		response.getWriter().write(this.transferMapToJson(modelMap.getModelMap()));
-        return ;
-    }
+		return ;
+	}
+
+
+	/**
+	 * 上传视频文件
+	 * @param multipartRequest
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	@RequestMapping(method = {RequestMethod.POST}, value = "/videoUpload.do")
+	public void videoUpload(MultipartHttpServletRequest multipartRequest,
+							HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		PubModelMap modelMap = new PubModelMap(request);
+		Users user = (Users)request.getSession().getAttribute("CURRENT_USER_INFO");
+		if (multipartRequest == null || multipartRequest.getFileNames() == null || user == null) {
+			LOGGER.error("上传视频操作异常，视频为空或者用户信息为空");
+			modelMap.put("status", "exception");
+			modelMap.put("data", "上传视频操作异常，视频为空，请重新上传！");
+		} else {
+			try {
+				LOGGER.info("开始上传视频");
+				for (Iterator<String> it = multipartRequest.getFileNames(); it.hasNext();) {
+					String key = (String) it.next();
+					MultipartFile file = multipartRequest.getFile(key);
+					//校验附件名称
+					if (file.getOriginalFilename().length() > 0) {
+						String originalFilename = file.getOriginalFilename();
+						String fileExtName = FileUtils.getFileExtName(originalFilename, systemConstant.getVideoFileSuffix());
+						//校验视频附件后缀名
+						if (fileExtName != null && !fileExtName.equals("")) {
+							//校验视频附件大小
+							if (this.checkUploadVideoSize(file)) {
+
+								String todayYMDStr = DateTimeUtils.getDateTime(DateTimeUtils.YMD);
+
+								String path = webConfig.getAppBasePath() + webConfig.getVideoPath() + todayYMDStr;
+								FolderUtils.createFolder(path);
+								LOGGER.info("视频上传路径：{}", path);
+
+								LOGGER.info("原视频文件名称：{}", originalFilename);
+
+								String fileName = CreateGUID.getGUID() + "." + fileExtName;
+								LOGGER.info("新视频文件名称：{}", fileName);
+								File targetFile = new File(path, fileName);
+								if(!targetFile.exists()){
+									targetFile.mkdirs();
+								}
+								//保存
+								file.transferTo(targetFile);
+								//附件信息保存到数据库
+								Attachment attachment = new Attachment();
+								attachment.setFileName(MyStringUtils.cutStr(fileName,
+										inputConfig.getFileNameLength()));
+
+								attachment.setFilePath(MyStringUtils.cutStr(
+										webConfig.getVideoPath() + todayYMDStr + "/",
+										inputConfig.getFilePathLength()));
+
+								attachment.setFileType(MyStringUtils.cutStr(file.getContentType(),
+										inputConfig.getFileTypeLength()));
+
+								attachment.setFileSize(file.getSize());
+
+								attachment.setOriginalFileName(MyStringUtils.cutStr(originalFilename,
+										inputConfig.getOriginalFileNameLength()));
+
+								attachment.setCreateUserId(user.getCreateUserId());
+
+								attachmentService.addNewAttachment(attachment);
+								modelMap.put("status", "success");
+								modelMap.put("data", attachment.getId());
+								modelMap.put("fileName", originalFilename);
+								modelMap.put("fileExtName", fileExtName);
+								modelMap.put("fileUrl", fileExtName);
+
+								if (!StringUtils.isEmpty(webConfig.getFileServerName())) {
+									modelMap.put("fileRelativeUrl", "/" + webConfig.getFileServerName() +
+											webConfig.getVideoPath() + todayYMDStr + "/" + fileName);
+								} else {
+									modelMap.put("fileRelativeUrl",
+											webConfig.getVideoPath().substring(
+													1, webConfig.getVideoPath().length())
+													+ todayYMDStr + "/" + fileName);
+								}
+
+							} else {
+								LOGGER.error("所上传的视频附件大小超过限制：{}M，附件大小为：{}M",
+										systemConstant.getMaxImportFileSize(),
+										file.getSize() / 1024 / 1024);
+								modelMap.put("status", "error");
+								modelMap.put("data", "所上传的视频附件大小超过限制：" +
+										systemConstant.getMaxImportFileSize() + "M");
+							}
+						} else {
+							LOGGER.error("视频附件的后缀名不在允许范围之内：{}", originalFilename);
+							modelMap.put("status", "error");
+							modelMap.put("data", "视频附件的后缀名不在允许范围之内！");
+						}
+
+					} else {
+						LOGGER.error("所上传的视频附件原始名称为空");
+						modelMap.put("status", "error");
+						modelMap.put("data", "所上传的视频附件原始名称为空，请重新上传");
+					}
+				}
+			} catch(Exception e) {
+				LOGGER.error("上传视频附件的操作出现异常：{}", e);
+				modelMap.put("status", "exception");
+				modelMap.put("data", "系统异常，请刷新页面重新请求！");
+			}
+		}
+		response.setCharacterEncoding(Constant.DEFAULT_ENCODE.STRING_UTF8);
+		response.setContentType(Constant.DEFAULT_CONTENT_TYPE.CONTENT_TYPE_UTF8);
+		response.getWriter().write(this.transferMapToJson(modelMap.getModelMap()));
+		return ;
+	}
 
 	/**
 	 * 上传图片
@@ -163,7 +298,7 @@ public class AttachmentController {
 	 */
 	@RequestMapping(method = {RequestMethod.POST}, value = "/fileImageUpload.do")
 	public void fileImageUpload(MultipartHttpServletRequest multipartRequest,
-			HttpServletRequest request, HttpServletResponse response)
+								HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PubModelMap modelMap = new PubModelMap(request);
 		Users user = (Users)request.getSession().getAttribute("CURRENT_USER_INFO");
@@ -181,7 +316,7 @@ public class AttachmentController {
 					if (file.getOriginalFilename().length() > 0) {
 						String originalFilename = file.getOriginalFilename();
 						String fileExtName = FileUtils.getFileExtName(originalFilename,
-								webConfig.getImageSuffix());
+								systemConstant.getImageFileSuffix());
 						//校验附件后缀名
 						if (fileExtName != null && !fileExtName.equals("")) {
 							//校验附件大小
@@ -189,8 +324,7 @@ public class AttachmentController {
 
 								String todayYMDStr = DateTimeUtils.getDateTime(DateTimeUtils.YMD);
 
-								String path = webConfig.getAppBasePath() + webConfig.getImagePath() +
-										DateTimeUtils.getDateTime(DateTimeUtils.YMD);
+								String path = webConfig.getAppBasePath() + webConfig.getImagePath() + todayYMDStr;
 								FolderUtils.createFolder(path);
 								LOGGER.info("图片上传路径：{}", path);
 
@@ -265,14 +399,13 @@ public class AttachmentController {
 		return ;
 	}
 
-
 	/**
 	 * 生成json字符串
 	 * @param map
 	 * @return String
 	 * @throws
 	 * @author liangyongjian
-	 * @date 2017-10-08 上午12:48:28
+	 * @create 2017-10-08 上午12:48:28
 	 * @version V1.0
 	 */
 	private String transferMapToJson(Map<String, Object> map){
@@ -289,12 +422,19 @@ public class AttachmentController {
 	 * @return boolean
 	 * @throws
 	 * @author liangyongjian
-	 * @date 2017-10-08 上午12:29:24
+	 * @create 2017-10-08 上午12:29:24
 	 * @version V1.0
 	 */
 	private boolean checkImportFileSize(MultipartFile file) {
 		//获取表单项中的文件信息
 		if(Integer.parseInt(String.valueOf(file.getSize())) > webConfig.getMaxFileSize() * 1024 * 1024)
+			return false;
+		return true;
+	}
+
+	private boolean checkUploadVideoSize(MultipartFile file) {
+		//获取表单项中的文件信息
+		if(Integer.parseInt(String.valueOf(file.getSize())) > systemConstant.getVideoFileMaxSize() * 1024 * 1024)
 			return false;
 		return true;
 	}
@@ -305,8 +445,8 @@ public class AttachmentController {
 			return false;
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * 下载用户所上传的附件
 	 * @param request
@@ -314,12 +454,12 @@ public class AttachmentController {
 	 * @return void
 	 * @throws
 	 * @author liangyongjian
-	 * @date 2017-11-21 上午01:06:13
+	 * @create 2017-11-21 上午01:06:13
 	 * @version V1.0
 	 */
 	@RequestMapping(method = {RequestMethod.POST}, value = "/fileDownload.do")
 	public void downloadAttachment(Long fileId, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+								   HttpServletResponse response) throws Exception {
 		OutputStream os = response.getOutputStream();
 		try {
 			if (fileId == null) {
@@ -344,11 +484,11 @@ public class AttachmentController {
 					+ new String(originalFileName.getBytes(),"ISO_8859_1") + "");
 			InputStream fis = new BufferedInputStream(new FileInputStream(downFile));
 			response.setContentLength(fis.available());
-	        byte[] buffer = new byte[fis.available()];
-	        fis.read(buffer);
-	        fis.close();
-	        os.write(buffer);
-	        os.flush();
+			byte[] buffer = new byte[fis.available()];
+			fis.read(buffer);
+			fis.close();
+			os.write(buffer);
+			os.flush();
 		} catch(Exception e) {
 			Map<String,Object> message = new HashMap<String,Object>(2);
 			message.put("success", false);
@@ -370,7 +510,7 @@ public class AttachmentController {
 //	 * @return void
 //	 * @throws
 //	 * @author liangyongjian
-//	 * @date 2017-10-08 上午01:06:13
+//	 * @create 2017-10-08 上午01:06:13
 //	 * @version V1.0
 //	 */
 //	@RequestMapping(method = {RequestMethod.POST}, value = "/exportFileDownload.do")
@@ -414,7 +554,7 @@ public class AttachmentController {
 //			os.close();
 //		}
 //	}
-	
+
 
 
 //	/**
@@ -424,7 +564,7 @@ public class AttachmentController {
 //	 * @return void
 //	 * @throws
 //	 * @author liangyongjian
-//	 * @date 2017-10-08 上午01:06:13
+//	 * @create 2017-10-08 上午01:06:13
 //	 * @version V1.0
 //	 */
 //	@RequestMapping(method = {RequestMethod.GET}, value = "/downPicFile.do")
@@ -458,7 +598,7 @@ public class AttachmentController {
 //			response.setContentType(Constant.DEFAULT_CONTENT_TYPE.CONTENT_TYPE_UTF8);
 //		}
 //	}
-	
+
 //	private void writeFile(HttpServletResponse response,File file){
 //		InputStream oInput = null;
 //		OutputStream oOutput = null;

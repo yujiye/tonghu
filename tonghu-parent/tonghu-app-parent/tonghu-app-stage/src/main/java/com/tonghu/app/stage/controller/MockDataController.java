@@ -38,7 +38,7 @@ public class MockDataController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.GET}, value = "/mockDataManage.do")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/mockDataManage.do")
     public String mockDataManage(HttpServletRequest request, ModelMap model) {
         model.addAttribute("pageHanName", "Mock数据"); //页面名称
         WebUtils.WrapperModle(request, model);

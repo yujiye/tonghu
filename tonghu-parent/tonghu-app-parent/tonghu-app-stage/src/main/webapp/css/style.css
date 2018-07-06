@@ -2667,6 +2667,7 @@ input.wrong { border: solid 1px #c30!important; }
 .relative { POSITION: relative;  }
 .trblueBg { color: #00669F; font-weight:normal; }
 .frontConfigFile { margin: 5px 0; font-size:13px;}
+.materialFileImg { margin: 5px 0; font-size:14px;}
 .left {float: left;}
 .right {float: right;}
 .tdRightBorder {border-right: 1px solid #D7D7D7}

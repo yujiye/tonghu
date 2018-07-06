@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="materialDao">
+	<resultMap id="materialInfoResult" type="material">
+		<id property="id" column="id"/>
+		<result property="materialName" column="material_name"/>
+		<result property="materialType" column="material_type"/>
+		<result property="attachId" column="attach_id"/>
+		<result property="materialDesc" column="material_desc"/>
+		<result property="createUserId" column="create_userid"/>
+		<result property="updateUserId" column="update_userid"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<sql id="allColumn">
+		id, material_name, material_type, attach_id, material_desc,
+		create_userid, update_userid, create_time, update_time
+    </sql>
+  
+  	<!-- 新增数据信息 -->
+	<insert id="insertNewMaterial" parameterType="material" useGeneratedKeys="true" keyProperty="id">
+		insert into material (
+		<trim suffix="" suffixOverrides=",">
+		    <if test="materialName != null and materialName != ''">
+				material_name,
+			</if>
+			<if test="materialType != null and materialType != ''">
+				material_type,
+			</if>
+			<if test="attachId != null and attachId != ''">
+				attach_id,
+			</if>
+			<if test="materialDesc != null and materialDesc != ''">
+				material_desc,
+			</if>
+			<if test="createUserId != null">
+				create_userid,
+			</if>
+		</trim>
+		) values(
+		<trim suffix="" suffixOverrides=",">
+			<if test="materialName != null and materialName != ''">
+				#{materialName},
+			</if>
+			<if test="materialType != null and materialType != ''">
+				#{materialType},
+			</if>
+			<if test="attachId != null and attachId != ''">
+				#{attachId},
+			</if>
+			<if test="materialDesc != null and materialDesc != ''">
+				#{materialDesc},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId},
+			</if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="long" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 获取所有的数据信息 -->
+	<select id="selectAllMaterialInfo" resultMap="materialInfoResult" resultType="material">
+		SELECT
+		<include refid="allColumn"/>
+		FROM material
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 根据数据id获取数据信息 -->
+	<select id="selectMaterialById" resultMap="materialInfoResult" resultType="material" parameterType="long">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			material
+		WHERE id = #{id}
+	</select>
+
+
+	<select id="selectMaterialByName" resultMap="materialInfoResult" resultType="material" parameterType="string">
+		SELECT <include refid="allColumn"/>
+		FROM material
+		WHERE material_name = #{materialName}
+	</select>
+	
+	<!-- 根据检索条件获取数据的数量 -->
+	<select id="selectMaterialCountByQuery" resultType="Integer" parameterType="materialQuery">
+		SELECT 
+			COUNT(1) 
+		FROM 
+			material 
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="materialName != null and materialName != ''">
+				AND <![CDATA[ material_name like CONCAT('%','${materialName}','%' ) ]]>
+			</if>
+			<if test="materialType != null and materialType != ''">
+				AND <![CDATA[ material_type = #{materialType} ]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 根据检索条件获取数据的信息 -->
+	<select id="selectMaterialInfoByQuery" resultType="material" resultMap="materialInfoResult" parameterType="materialQuery">
+		SELECT 
+			<include refid="allColumn"/> 
+		FROM 
+			material
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="materialName != null and materialName != ''">
+				AND <![CDATA[ material_name like CONCAT('%','${materialName}','%' ) ]]>
+			</if>
+			<if test="materialType != null and materialType != ''">
+				AND <![CDATA[ material_type = #{materialType} ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType == 2">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY id ASC
+			</otherwise>
+		</choose>
+		<if test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+	
+    <!-- 根据数据ID删除数据信息 物理删除 -->
+    <update id="updateMaterialById" parameterType="material">
+    	UPDATE material SET
+		<trim suffix="" suffixOverrides=",">
+			material_name = #{materialName},
+			material_type = #{materialType},
+			attach_id = #{attachId},
+			material_desc = #{materialDesc},
+			<if test="updateUserId != null">
+				update_userid = #{updateUserId},
+			</if>
+			update_time = now()
+		</trim>
+    	WHERE id = #{id}
+    </update>
+
+	<!-- 根据数据ID删除数据信息 物理删除 -->
+	<delete id="deleteMaterialById" parameterType="long">
+		DELETE FROM material WHERE id = #{id}
+	</delete>
+	
+</mapper>

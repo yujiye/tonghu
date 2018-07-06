@@ -73,10 +73,10 @@
 	<bean class="com.tonghu.pub.common.web.MyBeanPostProcessor" />
 
 
-	<!-- ④：定义文件上传处理器,最大1M -->
+	<!-- ④：定义文件上传处理器,最大300M -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize">
-			<value>1000000</value>
+			<value>3000000000</value>
 		</property>
 	</bean>
 

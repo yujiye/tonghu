@@ -141,7 +141,7 @@
 	</select>
 	
     <!-- 根据模拟数据ID删除模拟数据信息 物理删除 -->
-    <update id="updateMockDataById" parameterType="long">
+    <update id="updateMockDataById" parameterType="mockData">
     	UPDATE mock_data SET
 		<trim suffix="" suffixOverrides=",">
 			data_name = #{dataName},

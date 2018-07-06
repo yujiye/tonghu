@@ -82,6 +82,8 @@ public class SysConfig extends BusinessBasePo {
         if (StringUtils.isNotEmpty(valueType)) {
             if (valueType.equals("integer")) {
                 this.valueTypeStr = "整数";
+            } else if (valueType.equals("string")) {
+                this.valueTypeStr = "字符串";
             } else if (valueType.equals("file")) {
                 this.valueTypeStr = "文件";
             }

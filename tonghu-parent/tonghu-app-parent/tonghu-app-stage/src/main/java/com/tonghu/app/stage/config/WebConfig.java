@@ -1,5 +1,7 @@
 package com.tonghu.app.stage.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
  * @desc 静态配置资源持有器
  * @create 2017-09-29 16:00
  **/
+@Getter
+@Setter
 @Configuration
 public class WebConfig {
 
@@ -38,11 +42,11 @@ public class WebConfig {
     @Value("#{webConfigs['FILE_SUFFIX']}")
     private String fileSuffix;
 
-    @Value("#{webConfigs['IMAGE_SUFFIX']}")
-    private String imageSuffix;
-
     @Value("#{webConfigs['IMAGE_PATH']}")
     private String imagePath;
+
+    @Value("#{webConfigs['VIDEO_PATH']}")
+    private String videoPath;
 
     @Value("#{webConfigs['SERVER_ADDRESS']}")
     private String serverAddress;
@@ -56,55 +60,4 @@ public class WebConfig {
     @Value("#{webConfigs['MAX_FILE_SIZE']}")
     private int maxFileSize;
 
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public String getStartDateSearch() {
-        return startDateSearch;
-    }
-
-    public String getAppBasePath() {
-        return appBasePath;
-    }
-
-    public String getExportPath() {
-        return exportPath;
-    }
-
-    public String getUploadPath() {
-        return uploadPath;
-    }
-
-    public String getImportPath() {
-        return importPath;
-    }
-
-    public String getFileSuffix() {
-        return fileSuffix;
-    }
-
-    public String getImageSuffix() {
-        return imageSuffix;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public String getServerAddress() {
-        return serverAddress;
-    }
-
-    public String getFileServerName() {
-        return fileServerName;
-    }
-
-    public String getFrontImgSuffix() {
-        return frontImgSuffix;
-    }
-
-    public int getMaxFileSize() {
-        return maxFileSize;
-    }
 }

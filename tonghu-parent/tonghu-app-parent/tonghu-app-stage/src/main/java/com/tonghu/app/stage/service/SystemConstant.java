@@ -125,6 +125,45 @@ public class SystemConstant {
 		return 10;
 	}
 
+	public String getImageFileSuffix() {
+		String suffix = "";
+		if(!CollectionUtils.isEmpty(getSysConfigMapWithKeyItem())) {
+			if (getSysConfigMapWithKeyItem().containsKey("image_file_suffix")) {
+				suffix = getSysConfigMapWithKeyItem().get("image_file_suffix").getConfigValue();
+				if (!StringUtils.isEmpty(suffix)) {
+					suffix = suffix.replaceAll(",", ".");
+					return "." + suffix + ".";
+				}
+			}
+		}
+		return ".jpg.bmp.jpeg.png.gif.";
+	}
+
+	public Integer getVideoFileMaxSize() {
+		if(!CollectionUtils.isEmpty(getSysConfigMapWithKeyItem())) {
+			if (getSysConfigMapWithKeyItem().containsKey("video_file_max_size")) {
+				return Integer.parseInt(
+						getSysConfigMapWithKeyItem().get("video_file_max_size").getConfigValue());
+			}
+		}
+		return 200;
+	}
+
+
+	public String getVideoFileSuffix() {
+		String suffix = "";
+		if(!CollectionUtils.isEmpty(getSysConfigMapWithKeyItem())) {
+			if (getSysConfigMapWithKeyItem().containsKey("video_file_suffix")) {
+				suffix = getSysConfigMapWithKeyItem().get("video_file_suffix").getConfigValue();
+				if (!StringUtils.isEmpty(suffix)) {
+					suffix = suffix.replaceAll(",", ".");
+					return "." + suffix + ".";
+				}
+			}
+		}
+		return ".mp4.flv.mpeg.mpg.ram.mov.avi.ra.rm.rmvb.";
+	}
+
 	/**
 	 * 获取潼湖API应用的地址前缀
 	 * @return
@@ -137,6 +176,16 @@ public class SystemConstant {
 		}
 		return "";
 	}
+
+	public String getTonghuStageHostName() {
+		if(!CollectionUtils.isEmpty(getSysConfigMapWithKeyItem())) {
+			if (getSysConfigMapWithKeyItem().containsKey("tonghu_stage_host_name")) {
+				return getSysConfigMapWithKeyItem().get("tonghu_stage_host_name").getConfigValue();
+			}
+		}
+		return "";
+	}
+
 
 	/**
 	 * 获取角色信息集合

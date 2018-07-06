@@ -60,6 +60,8 @@
 		<typeAlias alias="testInterface" type="com.tonghu.pub.model.business.po.TestInterface" />
 		<!-- 模拟数据对象 -->
 		<typeAlias alias="mockData" type="com.tonghu.pub.model.business.po.MockData" />
+		<!-- 素材数据表信息对象 -->
+		<typeAlias alias="material" type="com.tonghu.pub.model.business.po.Material" />
 
 		<!-- 检索系统用户记录查询对象 -->
 		<typeAlias alias="usersQuery" type="com.tonghu.pub.model.security.po.query.UsersQuery" />
@@ -77,6 +79,8 @@
 		<typeAlias alias="attachmentQuery" type="com.tonghu.pub.model.common.po.query.AttachmentQuery" />
 		<!-- 模拟数据查询对象 -->
 		<typeAlias alias="mockDataQuery" type="com.tonghu.pub.model.business.po.query.MockDataQuery" />
+		<!-- 素材数据查询对象 -->
+		<typeAlias alias="materialQuery" type="com.tonghu.pub.model.business.po.query.MaterialQuery" />
 
 		<!-- 系统服务访问监控日志查询对象
 		<typeAlias alias="monitorReceiverLogQuery" type="com.experts.dblog.po.query.MonitorReceiverLogQuery" />-->
@@ -127,5 +131,7 @@
 		<mapper resource="mybatis/mybatis-testInterface.xml" />
 		<!-- 模拟数据表信息 -->
 		<mapper resource="mybatis/mybatis-mockData.xml" />
+		<!-- 素材数据表信息 -->
+		<mapper resource="mybatis/mybatis-material.xml" />
 	</mappers>
 </configuration> 

@@ -168,7 +168,7 @@
             </tr>
             <tr>
                 <td class='leftTd' width="18%">创建时间：</td><td width="32%"><label id="label_mock_data_create_time"></label></td>
-                <td class='leftTd' width="18">创建用户：</td><td width="32%"><label id="label_mock_data_create_userName"></label></td>
+                <td class='leftTd' width="18%">创建用户：</td><td width="32%"><label id="label_mock_data_create_userName"></label></td>
             </tr>
             <tr>
                 <td class='leftTd'>修改时间：</td><td><label id="label_mock_data_update_time"></label></td>

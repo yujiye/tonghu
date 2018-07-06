@@ -70,4 +70,7 @@ public class InputConfig {
     @Value("#{inputConfigCons['DATA_VALUE_LENGTH']}")
     private int dataValueLength;
 
+    @Value("#{inputConfigCons['MATERIAL_NAME_LENGTH']}")
+    private int materialNameLength;
+
 }

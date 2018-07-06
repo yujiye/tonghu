@@ -33,16 +33,16 @@
                             </tr>
                             </thead>
                             <tbody>
-							<#if sysConfigList?? && (sysConfigList?size > 0)>
-								<#assign num = 0>
-								<#list sysConfigList as sysConfigInfo>
-									<#assign num = num + 1>
+                            <#if sysConfigList?? && (sysConfigList?size > 0)>
+                                <#assign num = 0>
+                                <#list sysConfigList as sysConfigInfo>
+                                    <#assign num = num + 1>
                                 <tr>
                                     <td class="botValue">${num}</td>
                                     <td class="botValue">${sysConfigInfo.configName}</td>
                                     <td class="botValue">
                                         <#if sysConfigInfo.valueType == "integer" || sysConfigInfo.valueType == "string">
-                                            ${sysConfigInfo.configValue}
+                                        ${sysConfigInfo.configValue}
                                         <#elseif sysConfigInfo.valueType == "file">
                                             <A href="#" onclick="return downLoadFile('${sysConfigInfo.configValue}')">点击下载配置文件</A>
                                         </#if>
@@ -54,12 +54,12 @@
                                         <input type="hidden" id="config_item" value="${sysConfigInfo.configItem}" />
                                     </td>
                                 </tr>
-								</#list>
-							<#else>
+                                </#list>
+                            <#else>
                             <tr>
                                 <td class="botValue" colspan="6" style="padding:10px 0;">暂无系统配置项信息！</td>
                             </tr>
-							</#if>
+                            </#if>
                             </tbody>
                         </table>
                         <!-- 列表表格模块结束 end -->
@@ -122,7 +122,7 @@
             <tr id="simpleValueTr">
                 <td class='leftTd'>配置值：</td>
                 <td>
-                    <input type="text" maxlength="20" class="width150" id="change_config_value" name="change_config_value" value="" />
+                    <input type="text" maxlength="200" class="width300" id="change_config_value" name="change_config_value" value="" />
                     <span id="change_config_value_error" class="red"></span>
                 </td>
             </tr>

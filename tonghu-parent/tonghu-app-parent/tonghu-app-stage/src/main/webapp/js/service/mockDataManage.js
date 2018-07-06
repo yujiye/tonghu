@@ -51,7 +51,7 @@ $(document).ready(function() {
                     if (data.status != "error") {
                         $('#oper_result_label').html(data.data + "页面即将刷新！");
                         blockUIOpen('operResultWin');
-                        reloadPage("mockDataManage.do");
+                        reloadPageWithDelay("", "", "/mockDataManage.do", "");
                     } else {
                         $.each(data.data, function(i, item) {
                             seterror(item.key, item.value, false);
@@ -152,7 +152,7 @@ $(document).ready(function() {
                 if (data && data.status == "success") {
                     $('#oper_result_label').html(data.data + "页面即将刷新！");
                     blockUIOpen('operResultWin');
-                    reloadPage("mockDataManage.do");
+                    reloadPageWithDelay("", "", "/mockDataManage.do", "");
                 } else {
                     $('#oper_result_label').html(data.data);
                     blockUIOpen('operResultWin');
@@ -198,7 +198,7 @@ $(document).ready(function() {
                     if (data.status != "error") {
                         $('#oper_result_label').html(data.data + "页面即将刷新！");
                         blockUIOpen('operResultWin');
-                        reloadPage("mockDataManage.do");
+                        reloadPageWithDelay("", "", "/mockDataManage.do", "");
                     } else {
                         $.each(data.data, function(i, item) {
                             seterror(item.key, item.value, false);

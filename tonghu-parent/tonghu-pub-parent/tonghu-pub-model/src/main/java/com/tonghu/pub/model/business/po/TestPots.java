@@ -1,6 +1,6 @@
 package com.tonghu.pub.model.business.po;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import com.tonghu.pub.model.po.BasePo;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +14,10 @@ import lombok.Setter;
 @Setter
 public class TestPots extends BasePo {
 
-    @JsonProperty(value = "iotid")
+    @SerializedName("iotid")
     private String iotId;
 
-    @JsonProperty(value = "iotproid")
+    @SerializedName("iotproid")
     private String iotProId;
 
     private String mac;
@@ -26,20 +26,20 @@ public class TestPots extends BasePo {
 
     private String y;
 
-    @JsonProperty(value = "areaid")
+    @SerializedName("areaid")
     private String areaId;
 
-    @JsonProperty(value = "modelid")
+    @SerializedName("modelid")
     private String modelId;
 
     private String des;
 
-    @JsonProperty(value = "cadid")
+    @SerializedName("cadid")
     private String cadId;
 
     private String other;
 
-    @JsonProperty(value = "proname")
+    @SerializedName("proname")
     private String proName;
 
 

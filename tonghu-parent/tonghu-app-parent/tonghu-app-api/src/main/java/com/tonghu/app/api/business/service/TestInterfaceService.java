@@ -13,6 +13,13 @@ public interface TestInterfaceService {
      */
     String getAllTestInterfaceRecord();
 
+    /**
+     * 获取点位测试表数据信息
+     * @param areaId
+     * @return
+     */
+    String getTestPotsInfoByQuery(String areaId);
+
     String noMappingTableMsg();
 
 }

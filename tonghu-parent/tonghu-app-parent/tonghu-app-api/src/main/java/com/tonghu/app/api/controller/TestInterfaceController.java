@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,12 +30,16 @@ public class TestInterfaceController {
 
     @RequestMapping(value = "/{tableName}", method = RequestMethod.GET)
     public void getAllRecordList(
-            HttpServletRequest request, HttpServletResponse response, @PathVariable String tableName)
+            HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String tableName,
+            @RequestParam(value = "areaId", required = false)String areaId)
             throws Exception {
         LOGGER.debug("获取接口测试表信息");
         response.setContentType("application/json; charset=UTF-8");
         if (tableName.equals("test_interface")) {
             response.getWriter().print(testInterfaceService.getAllTestInterfaceRecord());
+        } else if (tableName.equals("test_pots")) {
+            response.getWriter().print(testInterfaceService.getTestPotsInfoByQuery(areaId));
         } else {
             response.getWriter().print(testInterfaceService.noMappingTableMsg());
         }

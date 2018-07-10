@@ -5,7 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tonghu.app.api.business.service.TestInterfaceService;
 import com.tonghu.pub.business.dao.TestInterfaceDao;
+import com.tonghu.pub.business.dao.TestPotsDao;
 import com.tonghu.pub.model.business.po.TestInterface;
+import com.tonghu.pub.model.business.po.TestPots;
+import com.tonghu.pub.model.business.po.query.TestPotsQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,9 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
             .disableHtmlEscaping().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
 
     @Autowired
+    private TestPotsDao testPotsDao;
+
+    @Autowired
     private TestInterfaceDao testInterfaceDao;
 
     @Override
@@ -47,6 +53,26 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
             result = getMessageJsonSrt(errorMsg);
         }
 
+        return result;
+    }
+
+    @Override
+    public String getTestPotsInfoByQuery(String areaId) {
+        String errorMsg = "", result ="";
+        TestPotsQuery query = new TestPotsQuery();
+        query.setAreaId(areaId);
+        query.setPageSize(-1);
+        query.setSortBy("iotid");
+        query.setSortType("1");
+        List<TestPots> testPotsList = testPotsDao.getTestPotsInfoByQuery(query);
+        if (CollectionUtils.isEmpty(testPotsList)) {
+            errorMsg = "no record";
+        } else {
+            result = GSON.toJson(testPotsList);
+        }
+        if (StringUtils.isNotEmpty(errorMsg)) {
+            result = getMessageJsonSrt(errorMsg);
+        }
         return result;
     }
 

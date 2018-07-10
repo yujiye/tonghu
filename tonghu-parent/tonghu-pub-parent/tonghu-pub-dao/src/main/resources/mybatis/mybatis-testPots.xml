@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="testPotsDao">
+	<resultMap id="testPotsResult" type="testPots">
+		<result property="iotId" column="iotid"/>
+		<result property="iotProId" column="iotproid"/>
+		<result property="mac" column="mac"/>
+		<result property="x" column="x"/>
+		<result property="y" column="y"/>
+		<result property="areaId" column="areaid"/>
+		<result property="modelId" column="modelid"/>
+		<result property="des" column="des"/>
+		<result property="cadId" column="cadid"/>
+		<result property="other" column="other"/>
+		<result property="proName" column="proname"/>
+	</resultMap>
+
+	<sql id="allColumn">
+		iotid, iotproid, mac, x, y, areaid, modelid, des, cadid, other, proname
+	</sql>
+
+	<!-- 获取信息 -->
+	<select id="selectTestPotsInfoByQuery" resultMap="testPotsResult" parameterType="testPotsQuery">
+		SELECT <include refid="allColumn"/>
+		FROM test_pots
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="iotId != null">
+				AND <![CDATA[ iotid = #{iotId} ]]>
+			</if>
+			<if test="iotProId != null">
+				AND <![CDATA[ iotproid = #{iotProId} ]]>
+			</if>
+			<if test="areaId !=null">
+				AND areaid like CONCAT('%','${areaId}','%' )
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType != 1">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY iotid DESC
+			</otherwise>
+		</choose>
+		<if test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+
+</mapper>

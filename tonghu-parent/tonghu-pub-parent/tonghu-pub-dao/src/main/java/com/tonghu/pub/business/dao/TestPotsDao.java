@@ -18,4 +18,12 @@ public interface TestPotsDao {
      * @return
      */
     List<TestPots> getTestPotsInfoByQuery(TestPotsQuery query);
+
+    /**
+     * 获取所有的 iotproid 信息
+     * @param query
+     * @return
+     */
+    List<String> getDistinctIotProIdByQuery(TestPotsQuery query);
+
 }

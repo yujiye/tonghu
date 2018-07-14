@@ -52,4 +52,20 @@
 		</if>
 	</select>
 
+	<select id="selectDistinctIotProIdByQuery" resultType="string" parameterType="testPotsQuery">
+		SELECT DISTINCT iotproid
+		FROM test_pots
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="iotId != null">
+				AND <![CDATA[ iotid = #{iotId} ]]>
+			</if>
+			<if test="iotProId != null">
+				AND <![CDATA[ iotproid = #{iotProId} ]]>
+			</if>
+			<if test="areaId !=null">
+				AND areaid like CONCAT('%','${areaId}','%' )
+			</if>
+		</trim>
+	</select>
+
 </mapper>

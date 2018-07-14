@@ -1,8 +1,10 @@
 package com.tonghu.pub.proxy.config;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
 @Configuration
 public class OuterUrl {
 
@@ -45,31 +47,4 @@ public class OuterUrl {
 	@Value("#{outerUrlProp['get-virtual-device-info-url']}")
 	private String getVirtualDeviceInfoUrl;
 
-	public String getIotTokenExpireErrorMsg() {
-		return iotTokenExpireErrorMsg;
-	}
-
-	public String getGetAccesskeyAuthUrl() {
-		return getAccesskeyAuthUrl;
-	}
-
-	public String getGetProductListUrl() {
-		return getProductListUrl;
-	}
-
-	public String getGetProductInfoUrl() {
-		return getProductInfoUrl;
-	}
-
-	public String getGetDeviceListUrl() {
-		return getDeviceListUrl;
-	}
-
-	public String getGetDeviceInfoUrl() {
-		return getDeviceInfoUrl;
-	}
-
-	public String getGetVirtualDeviceInfoUrl() {
-		return getVirtualDeviceInfoUrl;
-	}
 }

@@ -26,4 +26,10 @@ public class TestPotsDaoImpl extends BaseDao implements TestPotsDao {
         return getReadSqlSession().selectList("testPotsDao.selectTestPotsInfoByQuery", query);
     }
 
+    @Override
+    public List<String> getDistinctIotProIdByQuery(TestPotsQuery query) {
+        LOGGER.debug("Dao层：获取所有的 iotproid 信息");
+        return getReadSqlSession().selectList("testPotsDao.selectDistinctIotProIdByQuery", query);
+    }
+
 }

@@ -42,5 +42,8 @@ public class TestPots extends BasePo {
     @SerializedName("proname")
     private String proName;
 
+    @SerializedName("DeviceType")
+    private String deviceType;
+
 
 }

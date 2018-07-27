@@ -13,10 +13,11 @@
 		<result property="cadId" column="cadid"/>
 		<result property="other" column="other"/>
 		<result property="proName" column="proname"/>
+		<result property="deviceType" column="device_type"/>
 	</resultMap>
 
 	<sql id="allColumn">
-		iotid, iotproid, mac, x, y, areaid, modelid, des, cadid, other, proname
+		iotid, iotproid, mac, x, y, areaid, modelid, des, cadid, other, proname, device_type
 	</sql>
 
 	<!-- 获取信息 -->

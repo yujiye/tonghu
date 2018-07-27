@@ -91,7 +91,20 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
                     if (!CollectionUtils.isEmpty(testPotsList)) {
                         IotProPotsInfo.DeviceInfo deviceInfo = new IotProPotsInfo.DeviceInfo();
                         deviceInfo.setDeviceName(testPotsList.get(0).getProName());
-                        deviceInfo.setDeviceType(iotProId);
+                        if (StringUtils.isNotEmpty(testPotsList.get(0).getProName())) {
+                            if (testPotsList.get(0).getProName().indexOf("监控") > -1) {
+                                deviceInfo.setDeviceType("0");
+                            } else if (testPotsList.get(0).getProName().indexOf("照明") > -1) {
+                                deviceInfo.setDeviceType("1");
+                            } else if (testPotsList.get(0).getProName().indexOf("空调") > -1) {
+                                deviceInfo.setDeviceType("2");
+                            } else if (testPotsList.get(0).getProName().indexOf("光伏") > -1) {
+                                deviceInfo.setDeviceType("3");
+                            } else {
+                                deviceInfo.setDeviceType("4");
+                            }
+                        }
+
                         iotProPotsInfo.getIntelligenceDeviceList().add(deviceInfo);
 
                         deviceInfo.setDeviceList(new ArrayList<IotProPotsInfo.Device>());

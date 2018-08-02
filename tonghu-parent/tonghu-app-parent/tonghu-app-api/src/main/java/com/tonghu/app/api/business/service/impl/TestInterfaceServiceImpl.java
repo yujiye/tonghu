@@ -67,10 +67,11 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
     }
 
     @Override
-    public String getTestPotsInfoByQuery(String areaId) {
+    public String getTestPotsInfoByQuery(String areaId, String modelId) {
         String errorMsg = "", result ="";
         TestPotsQuery query = new TestPotsQuery();
-        query.setAreaId(areaId);
+        query.setAreaIdForQuery(areaId);
+        query.setModelId(modelId);
         List<String> iotProIdList = testPotsDao.getDistinctIotProIdByQuery(query);
 
         if (CollectionUtils.isEmpty(iotProIdList)) {
@@ -91,19 +92,7 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
                     if (!CollectionUtils.isEmpty(testPotsList)) {
                         IotProPotsInfo.DeviceInfo deviceInfo = new IotProPotsInfo.DeviceInfo();
                         deviceInfo.setDeviceName(testPotsList.get(0).getProName());
-                        if (StringUtils.isNotEmpty(testPotsList.get(0).getProName())) {
-                            if (testPotsList.get(0).getProName().indexOf("监控") > -1) {
-                                deviceInfo.setDeviceType("0");
-                            } else if (testPotsList.get(0).getProName().indexOf("照明") > -1) {
-                                deviceInfo.setDeviceType("1");
-                            } else if (testPotsList.get(0).getProName().indexOf("空调") > -1) {
-                                deviceInfo.setDeviceType("2");
-                            } else if (testPotsList.get(0).getProName().indexOf("光伏") > -1) {
-                                deviceInfo.setDeviceType("3");
-                            } else {
-                                deviceInfo.setDeviceType("4");
-                            }
-                        }
+                        deviceInfo.setDeviceType(testPotsList.get(0).getDeviceType());
 
                         iotProPotsInfo.getIntelligenceDeviceList().add(deviceInfo);
 

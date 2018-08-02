@@ -15,6 +15,7 @@ public class TestPotsQuery extends BasePaginationQuery {
 
     private String iotId;
     private String iotProId;
-    private String areaId; // 层数
+    private String modelId;
+    private String areaIdForQuery; // 层数
 
 }

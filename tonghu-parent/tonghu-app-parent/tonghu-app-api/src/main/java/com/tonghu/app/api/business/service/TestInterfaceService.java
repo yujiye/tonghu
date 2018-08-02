@@ -18,7 +18,7 @@ public interface TestInterfaceService {
      * @param areaId
      * @return
      */
-    String getTestPotsInfoByQuery(String areaId);
+    String getTestPotsInfoByQuery(String areaId, String modelId);
 
     String noMappingTableMsg();
 

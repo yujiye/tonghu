@@ -31,8 +31,11 @@
 			<if test="iotProId != null">
 				AND <![CDATA[ iotproid = #{iotProId} ]]>
 			</if>
-			<if test="areaId !=null">
-				AND areaid like CONCAT('%','${areaId}','%' )
+			<if test="areaIdForQuery != null and areaIdForQuery != ''">
+				AND areaid_for_query = #{areaIdForQuery}
+			</if>
+			<if test="modelId != null and modelId != ''">
+				AND modelid = #{modelId}
 			</if>
 		</trim>
 		<choose>
@@ -63,8 +66,11 @@
 			<if test="iotProId != null">
 				AND <![CDATA[ iotproid = #{iotProId} ]]>
 			</if>
-			<if test="areaId !=null">
-				AND areaid like CONCAT('%','${areaId}','%' )
+			<if test="areaIdForQuery != null and areaIdForQuery != ''">
+				AND areaid_for_query = #{areaIdForQuery}
+			</if>
+			<if test="modelId != null and modelId != ''">
+				AND modelid = #{modelId}
 			</if>
 		</trim>
 	</select>

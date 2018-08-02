@@ -32,14 +32,15 @@ public class TestInterfaceController {
     public void getAllRecordList(
             HttpServletRequest request, HttpServletResponse response,
             @PathVariable String tableName,
-            @RequestParam(value = "areaId", required = false)String areaId)
+            @RequestParam(value = "areaId", required = false)String areaId,
+            @RequestParam(value = "modelId", required = false)String modelId)
             throws Exception {
         LOGGER.debug("获取接口测试表信息");
         response.setContentType("application/json; charset=UTF-8");
         if (tableName.equals("test_interface")) {
             response.getWriter().print(testInterfaceService.getAllTestInterfaceRecord());
         } else if (tableName.equals("test_pots")) {
-            response.getWriter().print(testInterfaceService.getTestPotsInfoByQuery(areaId));
+            response.getWriter().print(testInterfaceService.getTestPotsInfoByQuery(areaId, modelId));
         } else {
             response.getWriter().print(testInterfaceService.noMappingTableMsg());
         }

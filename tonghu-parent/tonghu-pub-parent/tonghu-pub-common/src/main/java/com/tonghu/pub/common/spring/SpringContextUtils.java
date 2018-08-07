@@ -43,8 +43,6 @@ public class SpringContextUtils implements ApplicationContextAware {
 	 * @param request
 	 * @return ApplicationContext
 	 * @throws
-	 * @author liangyongjian
-	 * @date 2017-09-28 下午03:58:56
 	 * @version V1.0
 	 */
 	public static ApplicationContext getApplicationContext(HttpServletRequest request) {

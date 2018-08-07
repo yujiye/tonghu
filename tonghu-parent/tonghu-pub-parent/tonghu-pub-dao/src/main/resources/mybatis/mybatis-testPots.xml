@@ -8,6 +8,7 @@
 		<result property="x" column="x"/>
 		<result property="y" column="y"/>
 		<result property="areaId" column="areaid"/>
+		<result property="deviceFloorCount" column="device_floor_count"/>
 		<result property="modelId" column="modelid"/>
 		<result property="des" column="des"/>
 		<result property="cadId" column="cadid"/>
@@ -17,7 +18,7 @@
 	</resultMap>
 
 	<sql id="allColumn">
-		iotid, iotproid, mac, x, y, areaid, modelid, des, cadid, other, proname, device_type
+		iotid, iotproid, mac, x, y, areaid, device_floor_count, modelid, des, cadid, other, proname, device_type
 	</sql>
 
 	<!-- 获取信息 -->
@@ -68,6 +69,13 @@
 			</if>
 			<if test="areaIdForQuery != null and areaIdForQuery != ''">
 				AND areaid_for_query = #{areaIdForQuery}
+			</if>
+			<if test="areaIdForQueryList != null">
+				areaid_for_query IN
+				<foreach collection="areaIdForQueryList" item="areaIdForQuery"
+						 open="(" separator="," close=")">
+					#{areaIdForQuery}
+				</foreach>
 			</if>
 			<if test="modelId != null and modelId != ''">
 				AND modelid = #{modelId}

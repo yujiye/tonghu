@@ -20,6 +20,13 @@ public interface TestInterfaceService {
      */
     String getTestPotsInfoByQuery(String areaId, String modelId);
 
+    /**
+     * 根据类型获取点位信息
+     * @param typeName
+     * @return
+     */
+    String getTestPotsInfoByType(String typeName);
+
     String noMappingTableMsg();
 
 }

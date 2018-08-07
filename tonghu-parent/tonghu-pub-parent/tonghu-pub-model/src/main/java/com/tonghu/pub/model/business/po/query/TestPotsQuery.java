@@ -4,6 +4,8 @@ import com.tonghu.pub.model.po.BasePaginationQuery;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @author liangyongjian
  * @desc 点位测试 查询类
@@ -16,6 +18,7 @@ public class TestPotsQuery extends BasePaginationQuery {
     private String iotId;
     private String iotProId;
     private String modelId;
-    private String areaIdForQuery; // 层数
+    private String areaIdForQuery;
+    private List<String> areaIdForQueryList;
 
 }

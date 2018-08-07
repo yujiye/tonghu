@@ -29,6 +29,8 @@ public class TestPots extends BasePo {
     @SerializedName("areaid")
     private String areaId;
 
+    private int deviceFloorCount;
+
     @SerializedName("modelid")
     private String modelId;
 

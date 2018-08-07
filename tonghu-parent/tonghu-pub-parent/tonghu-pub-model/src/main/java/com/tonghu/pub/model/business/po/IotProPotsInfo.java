@@ -58,6 +58,10 @@ public class IotProPotsInfo extends BasePo {
 
         @SerializedName("modelTypeID")
         private String modelTypeId;
+
+        private int deviceFloorCount;
+
+        private int deviceType;
     }
 
 }

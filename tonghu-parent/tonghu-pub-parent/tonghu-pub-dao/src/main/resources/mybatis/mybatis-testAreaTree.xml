@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="testAreaTreeDao">
+	<resultMap id="testAreaTreeResult" type="testAreaTree">
+		<result property="id" column="id"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="fullParentId" column="full_parent_id"/>
+		<result property="owner" column="owner"/>
+		<result property="name" column="name"/>
+		<result property="type" column="type"/>
+		<result property="nickName" column="nickname"/>
+	</resultMap>
+
+	<sql id="allColumn">
+		id, parent_id, full_parent_id, owner, name, type, nickname
+	</sql>
+
+	<!-- 获取信息 -->
+	<select id="selectTestAreaTreeInfoByQuery" resultMap="testAreaTreeResult" parameterType="testAreaTreeQuery">
+		SELECT <include refid="allColumn"/>
+		FROM test_areatree
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="id != null">
+				AND <![CDATA[ id = #{id} ]]>
+			</if>
+			<if test="parentId != null and parentId != ''">
+				AND parent_id = #{parentId}
+			</if>
+			<if test="fullParentId != null and fullParentId != ''">
+				AND <![CDATA[ full_parent_id LIKE CONCAT('%', '${fullParentId}','%') ]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="sortBy != null and sortBy != ''">
+				<if test="sortType == 1">
+					ORDER BY ${sortBy} ASC
+				</if>
+				<if test="sortType != 1">
+					ORDER BY ${sortBy} DESC
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY LENGTH(full_parent_id) ASC
+			</otherwise>
+		</choose>
+		<if test="startNum != null and startNum >= 0 and pageSize != null and pageSize > 0">
+			limit #{startNum}, #{pageSize}
+		</if>
+	</select>
+
+</mapper>

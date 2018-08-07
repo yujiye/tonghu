@@ -2,6 +2,7 @@ package com.tonghu.app.api.controller;
 
 import com.tonghu.app.api.business.service.ProductService;
 import com.tonghu.app.api.business.service.TestInterfaceService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,36 @@ public class TestInterfaceController {
         } else {
             response.getWriter().print(testInterfaceService.noMappingTableMsg());
         }
-
     }
+
+    /**
+     * 提供三种类型的数据
+     * firstOpen 首开
+     * showHall 展厅
+     * hotel 酒店
+     * all 首开+展厅+酒店
+     * @param request
+     * @param response
+     * @param typeName
+     * @throws Exception
+     */
+    @RequestMapping(value = "/test_pots/{typeName}", method = RequestMethod.GET)
+    public void getRecordListByType(
+            HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String typeName)
+            throws Exception {
+        LOGGER.debug("获取接口测试表信息");
+        response.setContentType("application/json; charset=UTF-8");
+
+        if (StringUtils.isNotEmpty(typeName) &&
+                (typeName.equals("firstOpen")
+                || typeName.equals("showHall")
+                || typeName.equals("hotel")
+                || typeName.equals("all"))) {
+            response.getWriter().print(testInterfaceService.getTestPotsInfoByType(typeName));
+        } else {
+            response.getWriter().print(testInterfaceService.noMappingTableMsg());
+        }
+    }
+
 }

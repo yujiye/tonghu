@@ -18,6 +18,8 @@
 	<import resource="classpath:configs/spring-tonghu-jdbc.xml" />
 	<import resource="classpath:configs/spring-tonghu-proxy.xml" />
 
+	<util:properties id="tongHuConfigs" location="classpath:configs/tonghu-config.properties" />
+
 	<!-- 配置线程池 -->
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<!-- 线程池维护线程的最少数量 -->

@@ -27,7 +27,7 @@
 				AND <![CDATA[ parent_id = #{parentId} ]]>
 			</if>
 			<if test="fullParentId != null and fullParentId != ''">
-				AND full_parent_id = #{fullParentId}
+				AND <![CDATA[ full_parent_id LIKE CONCAT('%', '${fullParentId}','%') ]]>
 			</if>
 		</trim>
 		<choose>

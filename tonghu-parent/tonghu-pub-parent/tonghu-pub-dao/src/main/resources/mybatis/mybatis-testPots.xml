@@ -38,6 +38,20 @@
 			<if test="modelId != null and modelId != ''">
 				AND modelid = #{modelId}
 			</if>
+			<if test="areaIdForQueryList != null">
+				AND areaid_for_query IN
+				<foreach collection="areaIdForQueryList" item="areaIdForQuery"
+						 open="(" separator="," close=")">
+					#{areaIdForQuery}
+				</foreach>
+			</if>
+			<if test="modelIdList != null">
+				AND modelid IN
+				<foreach collection="modelIdList" item="modelId"
+						 open="(" separator="," close=")">
+					#{modelId}
+				</foreach>
+			</if>
 		</trim>
 		<choose>
 			<when test="sortBy != null and sortBy != ''">
@@ -70,15 +84,22 @@
 			<if test="areaIdForQuery != null and areaIdForQuery != ''">
 				AND areaid_for_query = #{areaIdForQuery}
 			</if>
+			<if test="modelId != null and modelId != ''">
+				AND modelid = #{modelId}
+			</if>
 			<if test="areaIdForQueryList != null">
-				areaid_for_query IN
+				AND areaid_for_query IN
 				<foreach collection="areaIdForQueryList" item="areaIdForQuery"
 						 open="(" separator="," close=")">
 					#{areaIdForQuery}
 				</foreach>
 			</if>
-			<if test="modelId != null and modelId != ''">
-				AND modelid = #{modelId}
+			<if test="modelIdList != null">
+				AND modelid IN
+				<foreach collection="modelIdList" item="modelId"
+						 open="(" separator="," close=")">
+					#{modelId}
+				</foreach>
 			</if>
 		</trim>
 	</select>

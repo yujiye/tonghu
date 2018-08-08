@@ -41,7 +41,7 @@ public class TestInterfaceController {
         if (tableName.equals("test_interface")) {
             response.getWriter().print(testInterfaceService.getAllTestInterfaceRecord());
         } else if (tableName.equals("test_pots")) {
-            response.getWriter().print(testInterfaceService.getTestPotsInfoByQuery(areaId, modelId));
+            response.getWriter().print(testInterfaceService.getTestPotsInfo(null, areaId, modelId));
         } else {
             response.getWriter().print(testInterfaceService.noMappingTableMsg());
         }
@@ -71,7 +71,7 @@ public class TestInterfaceController {
                 || typeName.equals("showHall")
                 || typeName.equals("hotel")
                 || typeName.equals("all"))) {
-            response.getWriter().print(testInterfaceService.getTestPotsInfoByType(typeName));
+            response.getWriter().print(testInterfaceService.getTestPotsInfo(typeName, null, null));
         } else {
             response.getWriter().print(testInterfaceService.noMappingTableMsg());
         }

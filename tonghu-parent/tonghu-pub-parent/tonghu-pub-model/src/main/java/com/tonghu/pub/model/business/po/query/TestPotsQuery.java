@@ -20,5 +20,6 @@ public class TestPotsQuery extends BasePaginationQuery {
     private String modelId;
     private String areaIdForQuery;
     private List<String> areaIdForQueryList;
+    private List<String> modelIdList;
 
 }

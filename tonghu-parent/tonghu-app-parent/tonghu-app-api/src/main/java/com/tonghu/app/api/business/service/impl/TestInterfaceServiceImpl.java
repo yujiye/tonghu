@@ -7,12 +7,11 @@ import com.tonghu.app.api.business.service.TestInterfaceService;
 import com.tonghu.app.api.config.TongHuConfig;
 import com.tonghu.pub.business.dao.TestAreaTreeDao;
 import com.tonghu.pub.business.dao.TestInterfaceDao;
+import com.tonghu.pub.business.dao.TestModelTreeDao;
 import com.tonghu.pub.business.dao.TestPotsDao;
-import com.tonghu.pub.model.business.po.IotProPotsInfo;
-import com.tonghu.pub.model.business.po.TestAreaTree;
-import com.tonghu.pub.model.business.po.TestInterface;
-import com.tonghu.pub.model.business.po.TestPots;
+import com.tonghu.pub.model.business.po.*;
 import com.tonghu.pub.model.business.po.query.TestAreaTreeQuery;
+import com.tonghu.pub.model.business.po.query.TestModelTreeQuery;
 import com.tonghu.pub.model.business.po.query.TestPotsQuery;
 import com.tonghu.pub.proxy.config.OuterUrl;
 import org.apache.commons.lang3.StringUtils;
@@ -23,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author liangyongjian
@@ -52,6 +48,9 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
 
     @Autowired
     private TestAreaTreeDao testAreaTreeDao;
+
+    @Autowired
+    private TestModelTreeDao testModelTreeDao;
 
     @Autowired
     private TestInterfaceDao testInterfaceDao;
@@ -145,40 +144,96 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
     }
 
     @Override
-    public String getTestPotsInfoByType(String typeName) {
+    public String getTestPotsInfo(String typeName, String areaId, String modelId) {
         String errorMsg = "", result ="";
 
-        String areaId = "";
-        if (typeName.equals("all")) {
-            areaId = tongHuConfig.getTopAreaId();
-        } else if (typeName.equals("firstOpen")) {
-            areaId = tongHuConfig.getFirstOpenAreaId();
-        } else if (typeName.equals("showHall")) {
-            areaId = tongHuConfig.getShowHallAreaId();
-        } else if (typeName.equals("hotel")) {
-            areaId = tongHuConfig.getHotelAreaId();
+        if (StringUtils.isBlank(typeName) && StringUtils.isBlank(areaId) && StringUtils.isBlank(modelId)) {
+            typeName = "all";
         }
 
         List<String> areaIdList = new ArrayList<>();
-        areaIdList.add(areaId);
+        String areaQueryId = null;
+        // 根据类型查询
+        if (StringUtils.isNotBlank(typeName)) {
+            if (typeName.equals("all")) {
+                areaQueryId = tongHuConfig.getTopAreaId();
+            } else if (typeName.equals("firstOpen")) {
+                areaQueryId = tongHuConfig.getFirstOpenAreaId();
+            } else if (typeName.equals("showHall")) {
+                areaQueryId = tongHuConfig.getShowHallAreaId();
+            } else if (typeName.equals("hotel")) {
+                areaQueryId = tongHuConfig.getHotelAreaId();
+            }
+        }
 
-        TestAreaTreeQuery areaTreeQuery = new TestAreaTreeQuery();
-        areaTreeQuery.setFullParentId(areaId);
-        areaTreeQuery.setPageSize(-1);
-        List<TestAreaTree> testAreaTreeList =
-                testAreaTreeDao.getTestAreaTreeInfoByQuery(areaTreeQuery);
+        if (StringUtils.isNotBlank(areaQueryId)) {
+            areaIdList.add(areaQueryId);
+            TestAreaTreeQuery areaTreeQuery = new TestAreaTreeQuery();
+            areaTreeQuery.setFullParentId(areaQueryId);
+            areaTreeQuery.setPageSize(-1);
+            List<TestAreaTree> testAreaTreeList =
+                    testAreaTreeDao.getTestAreaTreeInfoByQuery(areaTreeQuery);
 
-        if (!CollectionUtils.isEmpty(testAreaTreeList)) {
-            for (TestAreaTree testAreaTree : testAreaTreeList) {
-                if (StringUtils.isNotBlank(testAreaTree.getId())) {
-                    areaIdList.add(testAreaTree.getId());
+            if (!CollectionUtils.isEmpty(testAreaTreeList)) {
+                for (TestAreaTree testAreaTree : testAreaTreeList) {
+                    if (StringUtils.isNotBlank(testAreaTree.getId())) {
+                        areaIdList.add(testAreaTree.getId());
+                    }
                 }
             }
         }
 
+        // 根据 areaId 参数查询
+        if (StringUtils.isNotBlank(areaId)) {
+            areaIdList.add(areaId);
+            TestAreaTreeQuery areaTreeQuery = new TestAreaTreeQuery();
+            areaTreeQuery.setFullParentId(areaId);
+            areaTreeQuery.setPageSize(-1);
+            List<TestAreaTree> testAreaTreeList =
+                    testAreaTreeDao.getTestAreaTreeInfoByQuery(areaTreeQuery);
+
+            if (!CollectionUtils.isEmpty(testAreaTreeList)) {
+                for (TestAreaTree testAreaTree : testAreaTreeList) {
+                    if (StringUtils.isNotBlank(testAreaTree.getId())) {
+                        areaIdList.add(testAreaTree.getId());
+                    }
+                }
+            }
+        }
+
+        // 根据 modelId 查询 test_modeltree 表
+        List<String> modelIdList = new ArrayList<>();
+        if (StringUtils.isNotBlank(modelId)) {
+            modelIdList.add(modelId);
+            TestModelTreeQuery modelTreeQuery = new TestModelTreeQuery();
+            modelTreeQuery.setFullParentId(modelId);
+            modelTreeQuery.setPageSize(-1);
+            List<TestModelTree> testModelTreeList =
+                    testModelTreeDao.getTestModelTreeInfoByQuery(modelTreeQuery);
+
+            if (!CollectionUtils.isEmpty(testModelTreeList)) {
+                for (TestModelTree testModelTree : testModelTreeList) {
+                    if (StringUtils.isNotBlank(testModelTree.getId())) {
+                        modelIdList.add(testModelTree.getId());
+                    }
+                }
+            }
+        }
+
+
+        List<String> iotProIdList = null;
+
         TestPotsQuery query = new TestPotsQuery();
-        query.setAreaIdForQueryList(areaIdList);
-        List<String> iotProIdList = testPotsDao.getDistinctIotProIdByQuery(query);
+        // 从 test_pots 表中根据 areaId、smodelId 查询出 iotProId
+        if (!CollectionUtils.isEmpty(areaIdList) || !CollectionUtils.isEmpty(modelIdList)) {
+            if (!CollectionUtils.isEmpty(areaIdList)){
+                query.setAreaIdForQueryList(areaIdList);
+            }
+            if (!CollectionUtils.isEmpty(modelIdList)) {
+                query.setModelIdList(modelIdList);
+            }
+            iotProIdList = testPotsDao.getDistinctIotProIdByQuery(query);
+        }
 
         if (CollectionUtils.isEmpty(iotProIdList)) {
             errorMsg = "no record";

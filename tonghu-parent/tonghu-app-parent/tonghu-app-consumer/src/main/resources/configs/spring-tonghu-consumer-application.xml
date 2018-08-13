@@ -9,16 +9,15 @@
 		 http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- 支持注解注入bean -->
-	<context:component-scan base-package="com.tonghu.app.api,com.tonghu.pub" >
+	<context:component-scan base-package="com.tonghu.app.consumer,com.tonghu.pub" >
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	<!-- 实现SpringContextUtils中context参数的初始化，供该类提供springContext的静态get方法使用 -->
 	<bean class="com.tonghu.pub.common.spring.SpringContextUtils"/>
 
 	<import resource="classpath:configs/spring-tonghu-jdbc.xml" />
-	<import resource="classpath:configs/spring-tonghu-proxy.xml" />
 
-	<util:properties id="tongHuApiConfigs" location="classpath:configs/tonghu-api-config.properties" />
+	<util:properties id="tongHuConsumerConfigs" location="classpath:configs/tonghu-consumer-config.properties" />
 
 	<!-- 配置线程池 -->
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

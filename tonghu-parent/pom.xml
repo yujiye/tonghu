@@ -15,18 +15,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <project.version>1.0-SNAPSHOT</project.version>
-        <spring.version>4.3.1.RELEASE</spring.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
         <spring.security.version>3.1.2.RELEASE</spring.security.version>
-        <spring-aspects.version>4.3.1.RELEASE</spring-aspects.version>
+        <spring-aspects.version>4.3.10.RELEASE</spring-aspects.version>
+        <spring-message.version>4.3.10.RELEASE</spring-message.version>
         <mybatis.version>3.1.1</mybatis.version>
         <mybatis-spring.version>1.1.1</mybatis-spring.version>
         <logback.version>1.0.7</logback.version>
-        <slf4j.version>1.7.1</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <codehaus.jackson>1.9.13</codehaus.jackson>
         <fasterxml.jackson>2.8.4</fasterxml.jackson>
-        <junit.version>4.10</junit.version>
+        <junit.version>4.12</junit.version>
         <http.version>4.3.1</http.version>
         <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
         <dom4j.version>1.6.1</dom4j.version>
@@ -35,7 +36,7 @@
         <grizzly.version>2.1.4</grizzly.version>
         <hessian.lite.version>3.2.1-fixed-2</hessian.lite.version>
         <xstream.version>1.4.1</xstream.version>
-        <fastjson.version>1.1.41</fastjson.version>
+        <fastjson.version>1.2.47</fastjson.version>
         <bsf.version>3.1</bsf.version>
         <sorcerer.version>0.8</sorcerer.version>
         <curator.version>1.1.10</curator.version>
@@ -69,6 +70,8 @@
         <quartz.version>1.5.2</quartz.version>
         <mysql-connector-java.version>5.1.22</mysql-connector-java.version>
         <servlet-api.version>2.5</servlet-api.version>
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+        <javax.websocket-api.version>1.0</javax.websocket-api.version>
         <jsp-api.version>2.0</jsp-api.version>
         <hamcrest-core.version>1.2.1</hamcrest-core.version>
         <unrar.version>0.3</unrar.version>
@@ -89,7 +92,7 @@
         <fakepath-quartz.version>2.2.1</fakepath-quartz.version>
         <jxl.version>2.6.12</jxl.version>
         <freemarker.version>2.3.23</freemarker.version>
-        <guava.version>17.0</guava.version>
+        <guava.version>18.0</guava.version>
         <pinyin4j.version>1.0.0</pinyin4j.version>
         <gson.version>2.3</gson.version>
         <apache.commons-collections.version>4.0</apache.commons-collections.version>
@@ -97,6 +100,10 @@
         <apache.commons-digester3.version>3.2</apache.commons-digester3.version>
         <apache.commons-codec.version>1.7</apache.commons-codec.version>
         <lombok.version>1.14.8</lombok.version>
+        <xlink.ddq.sdk>1.0</xlink.ddq.sdk>
+        <okhttp.version>3.10.0</okhttp.version>
+        <kafka-clients.version>0.8.2.1</kafka-clients.version>
+        <kafka_2.9.1.version>0.8.2.1</kafka_2.9.1.version>
         <package.environment></package.environment>
     </properties>
 
@@ -262,6 +269,16 @@
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-websocket</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+                <version>${spring-message.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
@@ -484,7 +501,6 @@
                 <artifactId>jspsmart</artifactId>
                 <version>${jspsmart.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-core</artifactId>
@@ -575,6 +591,39 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>${javax.websocket-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.xlink</groupId>
+                <artifactId>xlink-ddq-sdk</artifactId>
+                <scope>system</scope>
+                <version>${xlink.ddq.sdk}</version>
+                <systemPath>${basedir}/lib/xlink-ddq-sdk-1.1.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka-clients.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_2.9.1</artifactId>
+                <version>${kafka_2.9.1.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -653,6 +702,15 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
@@ -844,6 +902,15 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -952,8 +1019,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

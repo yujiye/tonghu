@@ -27,6 +27,18 @@ public interface TestInterfaceService {
      */
     String getTestPotsInfo(String typeName, String areaId, String modelId);
 
+    /**
+     * 获取模块的根结点信息
+     * @return
+     */
+    String getRootModelInfo();
+
+    String getSubModelInfo(String modelId);
+
+    String getDeviceInfo(String areaId, String modelId);
+
+    String getModelTreeInfo(String areaId);
+
     String noMappingTableMsg();
 
 }

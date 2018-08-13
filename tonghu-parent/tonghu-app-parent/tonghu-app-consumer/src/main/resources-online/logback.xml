@@ -2,7 +2,7 @@
 <configuration  debug="true" scan="true" scanPeriod="30 minutes">
 
 <!-- ==================================================================================== -->
-    <property name="logDir" value="/usr/local/tomcat/logs/tonghu/api/"/>
+    <property name="logDir" value="/usr/local/tomcat/logs/tonghu/consumer/"/>
 	<!-- 打印到控制台 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
@@ -64,7 +64,7 @@
     </appender>
 
 	<!-- sql日志打印 -->
-	<appender name="sqlLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="sqllog" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<Encoding>UTF-8</Encoding>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${logDir}/monitor/sql/log.%d{yyyy-MM-dd.HH}.%i.log.gz</fileNamePattern>
@@ -99,19 +99,18 @@
 			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
 		</encoder>
 	</appender>
-
-	<!-- ==================================================================================== -->
-
+	
+<!-- ==================================================================================== -->
+	
 	<root level="INFO">
-		<appender-ref ref="infolog" />
-		<appender-ref ref="errorlog" />
+		<appender-ref ref="infolog" />  
+		<appender-ref ref="errorlog" /> 
 		<appender-ref ref="stdout" />
-		<appender-ref ref="webSocketLog" />
 	</root>
 
 	<!-- SQL日志打印 -->
 	<logger name="org.apache.ibatis.plugin.Interceptor" level="DEBUG">
-		<appender-ref ref="sqlLog" />
+		<appender-ref ref="sqllog" />
 	</logger>
 	 
 	<!-- 第三方日志级别的控制 -->

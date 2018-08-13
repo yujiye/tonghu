@@ -4,7 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tonghu.app.api.business.service.TestInterfaceService;
-import com.tonghu.app.api.config.TongHuConfig;
+import com.tonghu.app.api.config.TongHuApiConfig;
 import com.tonghu.pub.business.dao.TestAreaTreeDao;
 import com.tonghu.pub.business.dao.TestInterfaceDao;
 import com.tonghu.pub.business.dao.TestModelTreeDao;
@@ -44,7 +44,7 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
     private TestPotsDao testPotsDao;
 
     @Autowired
-    private TongHuConfig tongHuConfig;
+    private TongHuApiConfig tongHuApiConfig;
 
     @Autowired
     private TestAreaTreeDao testAreaTreeDao;
@@ -156,13 +156,13 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
         // 根据类型查询
         if (StringUtils.isNotBlank(typeName)) {
             if (typeName.equals("all")) {
-                areaQueryId = tongHuConfig.getTopAreaId();
+                areaQueryId = tongHuApiConfig.getTopAreaId();
             } else if (typeName.equals("firstOpen")) {
-                areaQueryId = tongHuConfig.getFirstOpenAreaId();
+                areaQueryId = tongHuApiConfig.getFirstOpenAreaId();
             } else if (typeName.equals("showHall")) {
-                areaQueryId = tongHuConfig.getShowHallAreaId();
+                areaQueryId = tongHuApiConfig.getShowHallAreaId();
             } else if (typeName.equals("hotel")) {
-                areaQueryId = tongHuConfig.getHotelAreaId();
+                areaQueryId = tongHuApiConfig.getHotelAreaId();
             }
         }
 
@@ -301,4 +301,185 @@ public class TestInterfaceServiceImpl extends BaseService implements TestInterfa
         errorMsgMap.put("errorMsg", "no mapping table");
         return GSON.toJson(errorMsgMap);
     }
+
+    @Override
+    public String getRootModelInfo() {
+        String result ="";
+        TestModelTreeQuery query = new TestModelTreeQuery();
+        query.setPageSize(-1);
+        query.setParentId(tongHuApiConfig.getRootModelId());
+        List<TestModelTree> testModelTreeList =
+                testModelTreeDao.getTestModelTreeInfoByQuery(query);
+        if (!CollectionUtils.isEmpty(testModelTreeList)) {
+            List<ModelInfo> rootModelInfoList = new ArrayList<>();
+            for (TestModelTree treeNode : testModelTreeList) {
+                ModelInfo rootModelInfo = new ModelInfo();
+                rootModelInfoList.add(rootModelInfo);
+                rootModelInfo.setName(treeNode.getName());
+                rootModelInfo.setId("/test/getSubModelInfo?modelId=" + treeNode.getId());
+                rootModelInfo.setIcon(treeNode.getName());
+                rootModelInfo.setFireOSC(new ArrayList<ModelInfo.FireOSC>());
+                rootModelInfo.setChildren(new ArrayList<ModelInfo>());
+            }
+            result = GSON.toJson(rootModelInfoList);
+        } else {
+            result = getMessageJsonSrt("no record");
+        }
+        return result;
+    }
+
+    @Override
+    public String getSubModelInfo(String modelId) {
+        String result ="", errorMsg = "";
+        TestModelTreeQuery query = new TestModelTreeQuery();
+        query.setPageSize(-1);
+        query.setId(modelId);
+        List<TestModelTree> testModelTreeList =
+                testModelTreeDao.getTestModelTreeInfoByQuery(query);
+        if (CollectionUtils.isEmpty(testModelTreeList)) {
+            errorMsg = "no such model: id=" + modelId;
+        } else {
+            ModelInfo rootModelInfo = new ModelInfo();
+            rootModelInfo.setName(testModelTreeList.get(0).getName());
+            rootModelInfo.setId("/test/getSubModelInfo?modelId=" + testModelTreeList.get(0).getId());
+            rootModelInfo.setIcon(testModelTreeList.get(0).getName());
+            rootModelInfo.setFireOSC(new ArrayList<ModelInfo.FireOSC>());
+
+            query.setId(null);
+            query.setParentId(modelId);
+            List<TestModelTree> subTestModelTreeList =
+                    testModelTreeDao.getTestModelTreeInfoByQuery(query);
+            if (!CollectionUtils.isEmpty(subTestModelTreeList)) {
+                List<ModelInfo> subModelInfoList = new ArrayList<>();
+                for (TestModelTree treeNode : subTestModelTreeList) {
+                    ModelInfo subModelInfo = new ModelInfo();
+                    subModelInfoList.add(subModelInfo);
+                    subModelInfo.setName(treeNode.getName());
+                    subModelInfo.setId("/test/getDeviceInfo?modelId="+treeNode.getId());
+                    subModelInfo.setIcon(treeNode.getName());
+                    ModelInfo.FireOSC fireOSC = new ModelInfo.FireOSC("");
+                    subModelInfo.setFireOSC(new ArrayList<ModelInfo.FireOSC>());
+                    subModelInfo.getFireOSC().add(fireOSC);
+                }
+                rootModelInfo.setChildren(subModelInfoList);
+            }
+            result = GSON.toJson(rootModelInfo);
+        }
+
+        if (StringUtils.isNotEmpty(errorMsg)) {
+            result = getMessageJsonSrt(errorMsg);
+        }
+        return result;
+    }
+
+    @Override
+    public String getDeviceInfo(String areaId, String modelId) {
+        String result = "";
+
+        List<String> areaIdList = new ArrayList<>();
+        // 根据 areaId 参数查询
+        if (StringUtils.isNotBlank(areaId)) {
+            areaIdList.add(areaId);
+            TestAreaTreeQuery areaTreeQuery = new TestAreaTreeQuery();
+            areaTreeQuery.setFullParentId(areaId);
+            areaTreeQuery.setPageSize(-1);
+            List<TestAreaTree> testAreaTreeList =
+                    testAreaTreeDao.getTestAreaTreeInfoByQuery(areaTreeQuery);
+
+            if (!CollectionUtils.isEmpty(testAreaTreeList)) {
+                for (TestAreaTree testAreaTree : testAreaTreeList) {
+                    if (StringUtils.isNotBlank(testAreaTree.getId())) {
+                        areaIdList.add(testAreaTree.getId());
+                    }
+                }
+            }
+        }
+
+        // 根据 modelId 查询 test_modeltree 表
+        List<String> modelIdList = new ArrayList<>();
+        if (StringUtils.isNotBlank(modelId)) {
+            modelIdList.add(modelId);
+            TestModelTreeQuery modelTreeQuery = new TestModelTreeQuery();
+            modelTreeQuery.setFullParentId(modelId);
+            modelTreeQuery.setPageSize(-1);
+            List<TestModelTree> testModelTreeList =
+                    testModelTreeDao.getTestModelTreeInfoByQuery(modelTreeQuery);
+
+            if (!CollectionUtils.isEmpty(testModelTreeList)) {
+                for (TestModelTree testModelTree : testModelTreeList) {
+                    if (StringUtils.isNotBlank(testModelTree.getId())) {
+                        modelIdList.add(testModelTree.getId());
+                    }
+                }
+            }
+        }
+
+        TestPotsQuery testPotsQuery = new TestPotsQuery();
+        testPotsQuery.setPageSize(-1);
+        if (!CollectionUtils.isEmpty(areaIdList)) {
+            testPotsQuery.setAreaIdForQueryList(areaIdList);
+        }
+        if (!CollectionUtils.isEmpty(modelIdList)) {
+            testPotsQuery.setModelIdList(modelIdList);
+        }
+        List<TestPots> testPotsList = testPotsDao.getTestPotsInfoByQuery(testPotsQuery);
+        List<DeviceInfo> deviceInfoList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(testPotsList)) {
+            for (TestPots testPots : testPotsList) {
+                DeviceInfo deviceInfo = new DeviceInfo();
+                deviceInfoList.add(deviceInfo);
+                deviceInfo.setTitle(testPots.getDes());
+                deviceInfo.setId(testPots.getIotId());
+                deviceInfo.setPosition(testPots.getAreaId());
+            }
+        }
+        result = GSON.toJson(deviceInfoList);
+        return result;
+    }
+
+    public String getModelTreeInfo(String areaId) {
+        String result = "";
+        TestModelTreeQuery query = new TestModelTreeQuery();
+        query.setPageSize(-1);
+        query.setParentId(tongHuApiConfig.getRootModelId());
+        List<TestModelTree> testModelTreeList =
+                testModelTreeDao.getTestModelTreeInfoByQuery(query);
+        if (!CollectionUtils.isEmpty(testModelTreeList)) {
+            List<ModelInfo> rootModelInfoList = new ArrayList<>();
+            for (TestModelTree treeNode : testModelTreeList) {
+                ModelInfo rootModelInfo = new ModelInfo();
+                rootModelInfoList.add(rootModelInfo);
+                rootModelInfo.setName(treeNode.getName());
+                rootModelInfo.setId("/test/getDeviceInfo?areaId=" + areaId + "&modelId=" + treeNode.getId());
+                rootModelInfo.setIcon(treeNode.getName());
+
+
+                query.setId(null);
+                query.setParentId(treeNode.getId());
+                List<TestModelTree> subTestModelTreeList =
+                        testModelTreeDao.getTestModelTreeInfoByQuery(query);
+                if (!CollectionUtils.isEmpty(subTestModelTreeList)) {
+                    List<ModelInfo> subModelInfoList = new ArrayList<>();
+                    for (TestModelTree subTreeNode : subTestModelTreeList) {
+                        ModelInfo subModelInfo = new ModelInfo();
+                        subModelInfoList.add(subModelInfo);
+                        subModelInfo.setName(subTreeNode.getName());
+                        subModelInfo.setId("/test/getDeviceInfo?areaId=" + areaId + "&modelId=" + subTreeNode.getId());
+                        subModelInfo.setIcon(subTreeNode.getName());
+                        ModelInfo.FireOSC fireOSC = new ModelInfo.FireOSC("");
+                        subModelInfo.setFireOSC(new ArrayList<ModelInfo.FireOSC>());
+                        subModelInfo.getFireOSC().add(fireOSC);
+                    }
+                    rootModelInfo.setChildren(subModelInfoList);
+                }
+
+            }
+            result = GSON.toJson(rootModelInfoList);
+        } else {
+            result = getMessageJsonSrt("no record");
+        }
+
+        return result;
+    }
+
 }

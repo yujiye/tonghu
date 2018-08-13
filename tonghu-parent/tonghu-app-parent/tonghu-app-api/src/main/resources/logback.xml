@@ -2,7 +2,7 @@
 <configuration  debug="true" scan="true" scanPeriod="30 minutes">
 
 <!-- ==================================================================================== -->
-    <property name="logDir" value="D:/work/log/tonghu/api/"/>
+    <property name="logDir" value="D:/work/log/tonghu/consumer/"/>
 	<!-- 打印到控制台 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
@@ -89,6 +89,16 @@
 			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
 		</encoder>
 	</appender>
+
+	<appender name="webSocketLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logDir}/webSocketLog/log.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
 	
 <!-- ==================================================================================== -->
 	
@@ -96,6 +106,7 @@
 		<appender-ref ref="infolog" />  
 		<appender-ref ref="errorlog" /> 
 		<appender-ref ref="stdout" />
+		<appender-ref ref="webSocketLog" />
 	</root>
 
 	<!-- SQL日志打印 -->
@@ -108,5 +119,9 @@
 
 	<logger name="socketServerLog" level="info" additivity="false">
 		<appender-ref ref="socketServerLog" />
+	</logger>
+
+	<logger name="webSocketLog" level="info" additivity="false">
+		<appender-ref ref="webSocketLog" />
 	</logger>
 </configuration>

@@ -13,18 +13,21 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-public class TongHuConfig {
+public class TongHuApiConfig {
 
-    @Value("#{tongHuConfigs['TOP_AREA_ID']}")
+    @Value("#{tongHuApiConfigs['TOP_AREA_ID']}")
     private String topAreaId;
 
-    @Value("#{tongHuConfigs['FIRST_OPEN_AREA_ID']}")
+    @Value("#{tongHuApiConfigs['FIRST_OPEN_AREA_ID']}")
     private String firstOpenAreaId;
 
-    @Value("#{tongHuConfigs['SHOW_HALL_AREA_ID']}")
+    @Value("#{tongHuApiConfigs['SHOW_HALL_AREA_ID']}")
     private String showHallAreaId;
 
-    @Value("#{tongHuConfigs['HOTEL_AREA_ID']}")
+    @Value("#{tongHuApiConfigs['HOTEL_AREA_ID']}")
     private String hotelAreaId;
+
+    @Value("#{tongHuApiConfigs['ROOT_MODEL_ID']}")
+    private String rootModelId;
 
 }
